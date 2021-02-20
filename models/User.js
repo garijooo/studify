@@ -2,8 +2,7 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const bcrypct = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
-const { JWT_EXPIRE, JWT_SECRET } = require('../config/dev');
+const keys = require('../config/keys');
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -43,7 +42,7 @@ UserSchema.methods.matchPassword = async function(password) {
     return await bcrypct.compare(password, this.password);
 }
 UserSchema.methods.getSignedToken = function() {
-    return jwt.sign({ id: this._id}, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE } );
+    return jwt.sign({ id: this._id}, keys.JWT_SECRET, { expiresIn: keys.JWT_EXPIRE } );
 }
 UserSchema.methods.getResetPasswordToken = function() {
     const resetToken = crypto.randomBytes(20).toString('hex');
