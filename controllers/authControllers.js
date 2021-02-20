@@ -95,13 +95,10 @@ exports.resetPass = async (req, res, next) => {
     }
 };
 
-
-
-
 const sendToken = (user, statusCode, res) => {
     const token = user.getSignedToken();
-    res.status(statusCode).json({
+        res.status(statusCode).json({
         success: true, 
-        token
+        token: token
     });
 }
