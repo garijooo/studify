@@ -7,11 +7,10 @@ import history from '../../histrory';
 import '../../styles/auth-screen.css';
 
 class SignIn extends React.Component {
-
-
     state = { email: null, password: null, error: null };
 
     componentDidMount() {
+        console.log(localStorage.getItem("authToken"));
         if(localStorage.getItem("authToken")) history.push('/');
     }
 
@@ -32,7 +31,9 @@ class SignIn extends React.Component {
                 { email: this.state.email, password: this.state.password },
                 config
             );
+            console.log(`token:: ${data.token}`);
             localStorage.setItem("authtoken", data.token);
+            console.log(`token::: ${localStorage.getItem("authToken")}`);
             history.push('/');
         } catch(error){
             this.setState({ error: error.response.data.error });

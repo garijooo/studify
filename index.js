@@ -13,18 +13,18 @@ app.use(bodyParser.json());
 app.use('/api/auth/', require('./routes/authRoutes'));
 app.use('/api/private/', require('./routes/privateRoutes'));
 app.use(errorHandler);
-
+ 
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static(path.join(__dirname, 'client', 'build')));
     app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
     });
 }
-else {
+/*else {
     app.get('/', (req, res) => {
         res.send('App running');
     })
-}
+} */
 
 mongoose.connect(keys.MONGO_URI, {
     useUnifiedTopology: true,
@@ -34,10 +34,12 @@ mongoose.connect(keys.MONGO_URI, {
 }).then(
     () => {
         const server = app.listen(PORT, () => console.log(`The server is running on port ${PORT}`));
+        /*
         process.on('unhandledRejection', (e, promise) => {
             console.log(`Logged error: ${e}`);
             server.close(() => process.exit(1));
         });
+        */
     }
 );
 

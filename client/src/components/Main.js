@@ -6,6 +6,7 @@ class Main extends React.Component {
     state = { privateData: null, error: null};
 
     componentDidMount() {
+        console.log(localStorage.getItem("authToken"));
         if(!localStorage.getItem("authtoken")) history.push('/auth/signin'); 
         this.fetchPrivateData();
     }
