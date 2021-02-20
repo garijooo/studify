@@ -3,19 +3,32 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const path = require('path');
 const app = express();
 
+const keys = require('./config/keys');
+const PORT = process.env.PORT || 5000;
 const errorHandler = require('./middleware/errorHandler');
+
 
 app.use(bodyParser.json());
 app.use('/api/auth/', require('./routes/authRoutes'));
 app.use('/api/private/', require('./routes/privateRoutes'));
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
-const { MONGO_URI } = require('./config/dev');
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static(path.join(__dirname, '/client/build')));
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+    });
+}
+else {
+    app.get('/', (req, res) => {
+        res.send('App running');
+    })
+}
 
-mongoose.connect(MONGO_URI, {
+mongoose.connect(keys.MONGO_URI, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,
