@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { signIn, signOut } from '../../actions'; 
 
 import history from '../../histrory';
 //styles
@@ -10,8 +12,7 @@ class SignIn extends React.Component {
     state = { email: null, password: null, error: null };
 
     componentDidMount() {
-        console.log(localStorage.getItem("authToken"));
-        if(localStorage.getItem("authToken")) history.push('/');
+        if(localStorage.getItem("authtoken")) history.push('/');
     }
 
 
@@ -31,11 +32,13 @@ class SignIn extends React.Component {
                 { email: this.state.email, password: this.state.password },
                 config
             );
-            console.log(`token:: ${data.token}`);
+
             localStorage.setItem("authtoken", data.token);
-            console.log(`token::: ${localStorage.getItem("authToken")}`);
+            this.props.signIn(data._id, data.email, data.username);
             history.push('/');
         } catch(error){
+            this.props.signOut();
+            localStorage.removeItem("authtoken");
             this.setState({ error: error.response.data.error });
         }
 
@@ -97,4 +100,4 @@ class SignIn extends React.Component {
     }
 }
 
-export default SignIn;
+export default connect(null, { signIn, signOut } )(SignIn);

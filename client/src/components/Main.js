@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React from 'react';
 import history from '../histrory';
+import { connect } from 'react-redux';
+import { signOut, signIn } from '../actions';
 
 class Main extends React.Component {
-    state = { privateData: null, error: null};
 
     componentDidMount() {
-        console.log(localStorage.getItem("authToken"));
         if(!localStorage.getItem("authtoken")) history.push('/auth/signin'); 
         this.fetchPrivateData();
     }
@@ -20,16 +20,16 @@ class Main extends React.Component {
 
         try {
             const { data } = await axios.get('/api/private', config);
-            
-            this.setState({ privateData: data.data });
+            this.props.signIn(data.data._id, data.data.email, data.data.username);
         } catch(e) {
             localStorage.removeItem("authtoken");
-            this.setState({ error: 'You are not authorized, please sign in'})
+            this.props.signOut();
         }
     }
 
-    signOutHandler() {
+    signOutHandler = () => {
         localStorage.removeItem("authtoken");
+        this.props.signOut();
         history.push('/auth/signin');
     }
 
@@ -37,26 +37,32 @@ class Main extends React.Component {
         return (
             <div>
                 <p>Main page</p>
-
-
-                {this.state.privateData && (
+                {this.props._id && (
                     <div>
                         <p>
-                            {`ID of user: ${this.state.privateData._id}`}
-                        </p>  
+                            USER ID: {this.props._id}
+                        </p>
                         <p>
-                            {`username: ${this.state.privateData.username}`}
-                        </p>  
+                            EMAIL: {this.props.email}
+                        </p>
                         <p>
-                            {`email: ${this.state.privateData.email}`}
-                        </p>  
+                            USERNAME: {this.props.username}
+                        </p>
                         <button onClick={this.signOutHandler}>Sign out</button>
                     </div>
                 )}       
-                {this.state.error && `error is: ${this.state.error}`}
+                {this.props.error && `error is: ${this.props.error}`}
             </div>
         )
     }
 }
+const mapStateToProps = state => {
+    return {
+        _id: state.auth._id,
+        email: state.auth.email,
+        username: state.auth.username,
+        error: state.auth.error
+    };
+}
 
-export default Main;
+export default connect(mapStateToProps, { signOut, signIn })(Main);
