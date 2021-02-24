@@ -3,11 +3,13 @@ const mongoose = require('mongoose');
 const bcrypct = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../config/keys');
+const { CourseSchema } = require('./Course');
 
 const UserSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: [true, "Please provide a username"]
+        required: [true, "Please provide a username"],
+        unique: true
     },
     email: {
         type: String,
@@ -24,10 +26,17 @@ const UserSchema = new mongoose.Schema({
         minlength: 6,
         select: false
     },
-    role: String, 
+    role: {
+        type: String,
+        default: 'student'
+    }, 
+    courses: {
+        type: [CourseSchema]
+    },
     resetPasswordToken: String,
     resetPasswordExpire: Date
 });
+
 
 UserSchema.pre("save", async function(next) {
     if(!this.isModified("password")) {

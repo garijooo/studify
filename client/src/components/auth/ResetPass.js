@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import history from '../../histrory';
+import history from '../../history';
 import { Link } from 'react-router-dom';
 
 class ResetPass extends React.Component {

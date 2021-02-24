@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from 'react';
-import history from '../../histrory';
+import history from '../../history';
 
 class ForgotPass extends React.Component {
     state = { email: null, error: null, success: null };

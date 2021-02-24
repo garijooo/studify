@@ -2,12 +2,16 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-import history from '../../histrory';
+import history from '../../history';
 //styles
 import '../../styles/auth-screen.css';
+import logo from '../../images/logo.png';
 
 class SingUp extends React.Component {
     state = { username: null, email: null, password: null, confirmPassword: null, error: null };
+    componentDidMount() {
+        localStorage.getItem("authtoken") && history.push('/courses');
+    }
 
     signUpHandler = async (e) => {
         e.preventDefault();
@@ -39,6 +43,10 @@ class SingUp extends React.Component {
     render() {
         return (
             <div className="auth-screen">
+                <Link to="/courses" >
+                    <img src={logo} alt="logo" className="auth-screen__logo" />
+                </Link>
+                
                 <form className="auth-screen__form" 
                     onSubmit={this.signUpHandler}
                 >

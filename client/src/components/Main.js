@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from 'react';
-import history from '../histrory';
+import history from '../history';
 import { connect } from 'react-redux';
 import { signOut, signIn } from '../actions';
 

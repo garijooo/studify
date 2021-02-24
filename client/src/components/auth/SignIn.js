@@ -4,15 +4,16 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { signIn, signOut } from '../../actions'; 
 
-import history from '../../histrory';
+import history from '../../history';
 //styles
 import '../../styles/auth-screen.css';
+import logo from '../../images/logo.png';
 
 class SignIn extends React.Component {
     state = { email: null, password: null, error: null };
 
     componentDidMount() {
-        if(localStorage.getItem("authtoken")) history.push('/');
+        if(localStorage.getItem("authtoken")) history.push('/courses');
     }
 
 
@@ -35,7 +36,7 @@ class SignIn extends React.Component {
 
             localStorage.setItem("authtoken", data.token);
             this.props.signIn(data._id, data.email, data.username);
-            history.push('/');
+            history.push('/courses');
         } catch(error){
             this.props.signOut();
             localStorage.removeItem("authtoken");
@@ -47,6 +48,10 @@ class SignIn extends React.Component {
     render() {
         return (
             <div className="auth-screen">
+                <Link to="/courses" >
+                    <img src={logo} alt="logo" className="auth-screen__logo" />
+                </Link>
+                
                 <form className="auth-screen__form" 
                     onSubmit={this.signInHandler}
                 >
