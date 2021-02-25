@@ -1,10 +1,15 @@
 import React from 'react';
 
+//styles
+import '../../styles/main-screen.css';
+
 class CourseList extends React.Component {
     render() {
         return (
-            <div>
-                Course list
+            <div className="container">
+                <div className="courses">
+                    course list
+                </div>
             </div>
         )
     }

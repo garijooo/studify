@@ -8,7 +8,14 @@ import '../../styles/auth-screen.css';
 import logo from '../../images/logo.png';
 
 class SingUp extends React.Component {
-    state = { username: null, email: null, password: null, confirmPassword: null, error: null };
+    state = { 
+        username: null, 
+        email: null, 
+        password: null, 
+        confirmPassword: null, 
+        role: null,
+        error: null 
+    };
     componentDidMount() {
         localStorage.getItem("authtoken") && history.push('/courses');
     }
@@ -27,7 +34,12 @@ class SingUp extends React.Component {
         try {
             const { data } = await axios.post(
                 "/api/auth/signup",
-                { username: this.state.username, email: this.state.email, password: this.state.password},
+                { 
+                    username: this.state.username, 
+                    email: this.state.email, 
+                    password: this.state.password,
+                    role: this.state.role
+                },
                 config
             );
 
@@ -95,6 +107,30 @@ class SingUp extends React.Component {
                             onChange={e => this.setState({ confirmPassword: e.target.value })}
                         />
                     </div>      
+                    <div className="auth-screen__form__element">
+                        <label htmlFor="">Role:</label>
+                        <div>
+                            <label htmlFor="">Student</label>
+                            <input 
+                                type="radio" 
+                                required 
+                                value="student" 
+                                name="role"
+                                id="student"
+                                required
+                                onChange={e => this.setState({ role: e.target.value })}
+                            />
+                            <label htmlFor="">Teacher</label>
+                            <input 
+                                type="radio" 
+                                required 
+                                value="teacher" 
+                                name="role"
+                                id="teacher"
+                                onChange={e => this.setState({ role: e.target.value })}
+                            /> 
+                        </div> 
+                    </div>  
                     <div className="auth-screen__form__element">
                         <input 
                             type="submit" 

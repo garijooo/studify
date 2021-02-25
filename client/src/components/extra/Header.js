@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { signOut, signIn } from '../../actions/index';
 
 import logo from '../../images/logo.png';
-import '../../styles/main-screen.css';
+import '../../styles/header.css';
 
 class Header extends React.Component {
 
@@ -57,21 +57,21 @@ class Header extends React.Component {
 
     render() {
         return (
-            <header className="main-screen">
+            <header className="header">
                 <Link to="/courses" >
                     <img src={logo} alt="logo" />
                 </Link>
                 
-                <nav className="main-screen__nav">
+                <nav className="header__nav">
                     <ul>
                     {localStorage.getItem("authtoken") ? this.rendAuth() : this.rendNonAuth()}
                     </ul>
                 </nav>
                 {localStorage.getItem("authtoken") ? (
-                  <a onClick={this.signOutHandler} className="main-screen__auth-link">Sign Out</a> 
+                  <a onClick={this.signOutHandler} className="header__auth-link">Sign Out</a> 
                 )
                 : 
-                <Link to="/auth/signin" className="main-screen__auth-link">Sign In</Link>
+                <Link to="/auth/signin" className="header__auth-link">Sign In</Link>
                 }
             </header>
         )
