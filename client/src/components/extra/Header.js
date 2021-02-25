@@ -23,7 +23,7 @@ class Header extends React.Component {
 
         try {
             const { data } = await axios.get('/api/private', config);
-            this.props.signIn(data.data._id, data.data.email, data.data.username);
+            this.props.signIn(data.data._id, data.data.email, data.data.username, data.data.role);
         } catch(e) {
             localStorage.removeItem("authtoken");
             this.props.signOut();
@@ -41,7 +41,7 @@ class Header extends React.Component {
             <React.Fragment>
                 <li><Link to="/courses" >Courses</Link></li>
                 <li><Link to="/profile/courses" >My Courses</Link></li>
-                <li><Link to="/profile/courses" >My Results</Link></li>
+                <li><Link to="/profile/results" >My Results</Link></li>
                 <li><Link to={`/profile/${this.props.username}`} >Profile</Link></li>
             </React.Fragment>
         );
@@ -50,7 +50,7 @@ class Header extends React.Component {
         return(
             <React.Fragment>
                 <li><Link to="/courses" >Courses</Link></li>
-                <li><Link to="/courses" >Help</Link></li>
+                <li><Link to="/help" >Help</Link></li>
             </React.Fragment>
         );
     }

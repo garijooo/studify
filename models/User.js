@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        required: [true, "Please select role"],
+        required: [true, "Please select a role"],
     }, 
     courses: {
         type: [Number]

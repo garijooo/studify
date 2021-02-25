@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import history from '../../history';
 
 class Profile extends React.Component {
@@ -9,7 +9,7 @@ class Profile extends React.Component {
     render() {
         return (
             <div>
-                Profile
+                Profile 123
             </div>
         )
     }

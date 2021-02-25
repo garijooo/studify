@@ -35,7 +35,7 @@ class SignIn extends React.Component {
             );
 
             localStorage.setItem("authtoken", data.token);
-            this.props.signIn(data._id, data.email, data.username);
+            this.props.signIn(data._id, data.email, data.username, data.role);
             history.push('/courses');
         } catch(error){
             this.props.signOut();

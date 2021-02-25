@@ -18,10 +18,12 @@ import CourseCreate from './courses/CourseCreate';
 import CourseEdit from './courses/CourseEdit';
 import CourseDelete from './courses/CourseDelete';
 import CourseShow from './courses/CourseShow';
+import Courses from './courses/Courses';
 
 // profile components
 import Profile from './profiles/Profile';
 import ProfileSettings from './profiles/ProfileSettings';
+import ProfileCourses from './profiles/ProfileCourses';
 
 import history from '../history';
 
@@ -36,15 +38,17 @@ class App extends React.Component{
                     <Route path="/courses" component={Header} />
                     <Switch>
                         <Route exact path="/" component={Helper} />    
-                        <Route exact path="/profile/:username" component={Profile} />
                         <Route exact path="/profile/settings" component={ProfileSettings} />
-                        <Route exact path="/profile/courses" component={ProfileSettings} />
+                        <Route exact path="/profile/courses" component={ProfileCourses} />
+                        <Route exact path="/profile/:username" component={Profile} />
+
                         
-                        <Route exact path="/courses" component={CourseList} />
-                        <Route exact path="/courses/new" component={CourseCreate} />
+                        <Route exact path="/courses" component={Courses} />
+                        <Route exact path="/courses/:id" component={CourseShow} />
+                        <Route exact path="/courses/new/:heading" component={CourseCreate} />
                         <Route exact path="/courses/edit/:id" component={CourseEdit} />
                         <Route exact path="/courses/delete/:id" component={CourseDelete} />
-                        <Route exact path="/courses/:id" component={CourseShow} />
+                        
 
                         <Route exact path="/auth/signin" component={SignIn} />
                         <Route exact path="/auth/signup" component={SignUp} />

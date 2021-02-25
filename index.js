@@ -12,11 +12,14 @@ const errorHandler = require('./middleware/errorHandler');
 
 app.use(fileUpload());
 app.use(bodyParser.json());
+app.use('/static/public', express.static(__dirname + '/public/images'));
 app.use('/api/auth/', require('./routes/authRoutes'));
 app.use('/api/private/', require('./routes/privateRoutes'));
-//app.use(express.static('public'));
-app.use('/static/public', express.static(__dirname + '/public/images'));
+
+app.use('/api/courses/', require('./routes/courseRoutes'));
+
 app.use('/api/upload/', require('./routes/uploadRoutes'));
+
 app.use(errorHandler);
  
 if(process.env.NODE_ENV === 'production'){

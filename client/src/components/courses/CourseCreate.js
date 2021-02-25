@@ -1,13 +1,21 @@
 import React from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+// history object
+import history from '../../history';
+// modal window
+import Modal from '../extra/Modal';
 
 class CourseCreate extends React.Component {
-    state = { url: null, error: null, blocks: [], data: null };
+    //state = { url: null, error: null, blocks: [], data: null };
 
-    /*fetchImage = async = (_id) => {
+    /*
+    fetchImage = async = (_id) => {
 
-    }*/
-
+    }
+    */
+    /*
     uploadImage = async () => {
        // e.preventDefault();
         const config = {
@@ -34,16 +42,16 @@ class CourseCreate extends React.Component {
             console.log(error.response.data.error);
             this.setState({ error: error.response.data.error });
         }
-    }
+    } 
+    */
     /*
     uploadImage = e => {
         e.preventDefault();
         console.log(e);
-    }*/
-
-    render() {
-        return (
-            <div>
+    }
+    */
+    /*
+<div>
                 Course create
                 <form onSubmit={this.uploadImage} >
                     <input type="file" name="sampleFile" id="file-id" />
@@ -51,8 +59,75 @@ class CourseCreate extends React.Component {
                     <h1>Data: {this.state.data}</h1>
                 </form>
             </div>
-        )
+
+    */
+    componentDidMount() {
+        if(!this.props.match.params.heading) history.push('/profile/courses');
+    }
+
+    onCreateHandler = async () => {
+        const { heading } = this.props.match.params.heading;
+        const config = {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        };
+        console.log(this.props.teachersId);
+        try {
+            const { data } = await axios.post(
+                "/api/courses/create",
+                { 
+                    heading: this.props.match.params.heading,
+                    teachersId: this.props.teachersId
+                },
+                config
+            );
+
+            history.push(`/courses/edit/${data.course._id}`);
+        } catch(error){
+            console.log(error.response.data.error);
+        }
+      
+      // console.log('onCreateHandler');
+
+    }
+
+    rednerActions() {
+        return (
+            <React.Fragment>
+                <button 
+                    onClick={this.onCreateHandler} 
+                    className="container__page__btn green-btn"
+                >
+                Create
+                </button>
+                <Link 
+                    to="/profile/courses" 
+                    className="container__page__btn red-btn"
+                >
+                Cancel
+                </Link>
+            </React.Fragment>
+        ); 
+    }  
+
+    renderContent() {
+        return `Are you sure you want to create a Course with heading: '${this.props.match.params.heading}'?`
+    }
+    render() {
+        return (
+            <Modal
+                title="Create Course"
+                content={this.renderContent()}
+                actions={this.rednerActions()}
+                onDismiss={() => history.push('/profile/courses')}
+            />
+        );
     }
 }
 
-export default CourseCreate;
+const mapStateToProps = state => {
+    return { teachersId: state.auth._id };
+}
+
+export default connect(mapStateToProps)(CourseCreate);

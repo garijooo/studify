@@ -47,6 +47,7 @@ class SingUp extends React.Component {
 
             history.push('/');
         } catch(error){
+            if(error.response.data.error === 'Duplicate Field Value Enter') return this.setState({ error: 'Username or email is already reserved'});
             this.setState({ error: error.response.data.error });
         }
 

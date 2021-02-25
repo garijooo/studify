@@ -5,6 +5,10 @@ const CourseSchema = new mongoose.Schema({
         type: String, 
         required: [true, "Please provide a heading of the Course"]
     },
+    teachersId: {
+        type: String,
+        required: [true, "No teachers ID was sent"]
+    },
     blocks: [
         {
             type: String,
@@ -16,5 +20,6 @@ const CourseSchema = new mongoose.Schema({
 });
 
 const Course =  mongoose.model('Course', CourseSchema);
-module.exports.CourseSchema;
-module.exports.Course;
+
+exports.Course = Course;
+exports.CourseSchema = CourseSchema;
