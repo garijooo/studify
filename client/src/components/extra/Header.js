@@ -23,14 +23,17 @@ class Header extends React.Component {
 
         try {
             const { data } = await axios.get('/api/private', config);
+            localStorage.setItem("id", data.data._id);
             this.props.signIn(data.data._id, data.data.email, data.data.username, data.data.role);
         } catch(e) {
+            localStorage.removeItem("id");
             localStorage.removeItem("authtoken");
             this.props.signOut();
         }
     }
 
     signOutHandler = () => {
+        localStorage.removeItem("id");
         localStorage.removeItem("authtoken");
         this.props.signOut();
         //history.push('/auth/signin');

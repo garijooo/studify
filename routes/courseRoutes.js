@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const { createCourse, fetchAllCourses, fetchCourseById } = require('../controllers/courseControllers');
+const { createCourse, fetchCourses, fetchCoursesById, fetchCourseById } = require('../controllers/courseControllers');
 
 router.route('/create').post(createCourse);
-router.route('/fetch/all').get(fetchAllCourses);
-router.route('/fetch/:id').get(fetchCourseById)
+router.route('/fetch/courses/:id').get(fetchCoursesById);
+router.route('/fetch/courses').get(fetchCourses);
+router.route('/fetch/course/:id').get(fetchCourseById);
 
 module.exports = router;

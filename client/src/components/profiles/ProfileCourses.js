@@ -1,8 +1,8 @@
 import React from 'react';
 import history from '../../history';
 import { connect } from 'react-redux';
-import { createCourse } from '../../actions/index';
 
+import CourseList from '../courses/CourseList';
 //styles
 import '../../styles/main-screen.css';
 
@@ -55,6 +55,7 @@ class ProfileCourses extends React.Component {
                 <div className="container__page">
                 Profile Courses
                 { this.props.role && this.renderCreateSection()}
+                <CourseList fetch="coursesById" />
                 </div>
             </div>
         )

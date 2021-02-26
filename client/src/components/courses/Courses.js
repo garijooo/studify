@@ -1,6 +1,5 @@
 import React from 'react';
 import CourseList from './CourseList';
-
 //styles
 import '../../styles/main-screen.css';
 
@@ -9,7 +8,7 @@ class Courses extends React.Component {
         return (
             <div className="container">
                 <div className="container__page">
-                    <CourseList />
+                    <CourseList fetch="courses" />
                 </div>
             </div>
         )

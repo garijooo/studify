@@ -1,6 +1,12 @@
 import React from 'react';
 
 class CourseEdit extends React.Component {
+    state = { inputType: 'text', currentCourse: [] };
+
+    //componentDidMount() {
+    //
+    //}
+
     render() {
         return (
             <div>

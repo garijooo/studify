@@ -17,9 +17,9 @@ exports.createCourse = async (req, res, next) => {
 }
 
 exports.fetchCourseById = async (req, res, next) => {
-    const { teachersId } = req.body;
+    const { _id } = req.params.id;
     try{
-        const courses = await Course.find({ teachersId });
+        const courses = await Course.findById(_id);
         if(courses === []) return res.status(204).json({ success: true });
         
         res.status(200).json({
@@ -31,7 +31,7 @@ exports.fetchCourseById = async (req, res, next) => {
     }
 }
 
-exports.fetchAllCourses = async (req, res, next) => {
+exports.fetchCourses = async (req, res, next) => {
     try {
         const courses = await Course.find({});
         if(courses === []) return res.status(204).json({ success: true, courses });
@@ -44,3 +44,18 @@ exports.fetchAllCourses = async (req, res, next) => {
         next(e);
     }
 }
+exports.fetchCoursesById = async (req, res, next) => {
+    try {
+        const courses = await Course.find({ teachersId: req.params.id });
+        if(courses === []) return res.status(204).json({ success: true, courses });
+
+        res.status(200).json({
+            success: true, 
+            courses
+        });
+    } catch(e) {    
+        next(e);
+    }
+}
+
+

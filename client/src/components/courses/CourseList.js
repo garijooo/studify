@@ -1,29 +1,13 @@
 import React from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
-import { coursesList } from '../../actions/index';
+import { fetchCourses, fetchCoursesById } from '../../actions/index';
 //styles
 import '../../styles/main-screen.css';
 
 class CourseList extends React.Component {
     componentDidMount() {
-        this.fetchCourses();
-    }
-
-    fetchCourses = async () => {
-        const config = {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        };
-        try {
-            const { data } = await axios.get('/api/courses/fetch/all', config);
-            this.props.coursesList(data.courses);
-
-        } catch(e) {
-            console.log(e);
-        }
-
+        if(this.props.fetch === 'courses') this.props.fetchCourses();
+        else this.props.fetchCoursesById(localStorage.getItem("id"));
     }
 
     renderCoursesList() {
@@ -36,19 +20,33 @@ class CourseList extends React.Component {
             );
         });
     }
-
+    renderCoursesByIdList() {
+        console.log(`courses: ${this.props.coursesUser} `)
+        return this.props.coursesUser.map(course => {
+            return(
+                <div key={course._id}>
+                    Course heading: {course.heading}
+                    Course author's ID: {course.teachersId}
+                </div>
+            );
+        });
+    }
     render() {
         return (
             <div >
                 Courses list
-                {this.renderCoursesList()}
+                {this.props.fetch === 'courses' ? this.renderCoursesList() : this.renderCoursesByIdList() }
             </div>
         )
     }
 }
 
 const mapStateToProps = state => {
-    return { courses: state.courses.courses };
+    return { 
+        courses: state.courses.courses,
+        coursesUser: state.courses.coursesUser,
+        teachersId: state.auth._id
+     };
 }
 
-export default connect(mapStateToProps, { coursesList })(CourseList);
+export default connect(mapStateToProps, { fetchCourses, fetchCoursesById })(CourseList);
