@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { signIn, signOut } from '../../actions'; 
+import { signIn, signOut, updateLastChange, fetchTeachersCourses } from '../../actions'; 
 
 import history from '../../history';
 //styles
@@ -35,7 +35,9 @@ class SignIn extends React.Component {
             );
 
             localStorage.setItem("authtoken", data.token);
-            this.props.signIn(data._id, data.email, data.username, data.role);
+            this.props.signIn(data._id, data.email, data.username, data.role, Date.now());
+            if(data.role === 'teacher') this.props.fetchTeachersCourses(data._id);
+            //this.props.updateLastChange(new Date());
             history.push('/courses');
         } catch(error){
             this.props.signOut();
@@ -105,4 +107,4 @@ class SignIn extends React.Component {
     }
 }
 
-export default connect(null, { signIn, signOut } )(SignIn);
+export default connect(null, { signIn, signOut, updateLastChange, fetchTeachersCourses } )(SignIn);

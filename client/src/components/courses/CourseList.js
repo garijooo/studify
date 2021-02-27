@@ -1,28 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchCourses, fetchCoursesById } from '../../actions/index';
 //styles
 import '../../styles/main-screen.css';
 
 class CourseList extends React.Component {
+    /*
     componentDidMount() {
         if(this.props.fetch === 'courses') this.props.fetchCourses();
-        else this.props.fetchCoursesById(localStorage.getItem("id"));
+        else this.props.fetchMyCourses(localStorage.getItem("id"));
     }
-
+    */
+    
+    /*
+    componentDidMount() {
+        if(!this.props.courses) this.updateEmptyArray();
+    }
+    updateEmptyArray = () => {
+        console.log()
+        this.props.courses = [ ...this.props.myCourses ];
+    }
+    */
     renderCoursesList() {
         return this.props.courses.map(course => {
-            return(
-                <div key={course._id}>
-                    Course heading: {course.heading}
-                    Course author's ID: {course.teachersId}
-                </div>
-            );
-        });
-    }
-    renderCoursesByIdList() {
-        console.log(`courses: ${this.props.coursesUser} `)
-        return this.props.coursesUser.map(course => {
             return(
                 <div key={course._id}>
                     Course heading: {course.heading}
@@ -35,18 +34,22 @@ class CourseList extends React.Component {
         return (
             <div >
                 Courses list
-                {this.props.fetch === 'courses' ? this.renderCoursesList() : this.renderCoursesByIdList() }
+                {this.renderCoursesList()}
             </div>
         )
     }
 }
-
+/*
 const mapStateToProps = state => {
     return { 
         courses: state.courses.courses,
-        coursesUser: state.courses.coursesUser,
+        usersLastChange: state.auth.lastChange,
+        coursesUser: state.auth.myCourses,
         teachersId: state.auth._id
      };
 }
-
-export default connect(mapStateToProps, { fetchCourses, fetchCoursesById })(CourseList);
+*/
+const mapStateToProps = state => {
+    return { myCourses: state.auth.myCourses };
+}
+export default connect(mapStateToProps)(CourseList);

@@ -4,22 +4,27 @@ import {
     SIGN_OUT,
     FETCH_COURSE,
     FETCH_COURSES,
-    FETCH_COURSES_BY_ID
+    MY_COURSES,
+    UPDATE_LAST_CHANGE,
+    UPDATE_TEACHERS_LAST_CHANGE,
+    FETCH_STATUS
 } from './types';
+
 const config = {
     headers: {
         "Content-Type": "application/json"
     }
 };
 
-export const signIn = (_id, email, username, role) => {
+export const signIn = (_id, email, username, role, lastChange) => {
     return {
         type: SIGN_IN,
         payload: {
             _id,
             username,
             email, 
-            role
+            role,
+            lastChange
         }
     };
 }
@@ -27,6 +32,26 @@ export const signIn = (_id, email, username, role) => {
 export const signOut = () => {
     return {
         type: SIGN_OUT
+    }
+}
+
+export const updateLastChange = date => {
+    return {
+        type: UPDATE_LAST_CHANGE,
+        payload: date
+    }
+}
+export const updateTeachersLastChange = date => {
+    return {
+        type: UPDATE_TEACHERS_LAST_CHANGE,
+        payload: date
+    }
+}
+
+export const updateFetchStatus = value => {
+    return {
+        type: FETCH_STATUS,
+        payload: value
     }
 }
 
@@ -54,14 +79,14 @@ export const fetchCourses = () => async dispatch => {
     } 
 }
 
-export const fetchCoursesById = id => async dispatch => {
+export const fetchTeachersCourses = id => async dispatch => {
     try { 
         const response = await axios.get(
             `/api/courses/fetch/courses/${id}`,
             config
         );
         dispatch({
-            type: FETCH_COURSES_BY_ID,
+            type: MY_COURSES,
             payload: response.data.courses   
         });
     } catch(err) {

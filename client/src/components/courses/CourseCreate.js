@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { updateLastChange, updateFetchStatus } from '../../actions';
 // history object
 import history from '../../history';
 // modal window
@@ -66,7 +67,6 @@ class CourseCreate extends React.Component {
     }
 
     onCreateHandler = async () => {
-        const { heading } = this.props.match.params.heading;
         const config = {
             headers: {
                 "Content-Type": "application/json"
@@ -82,14 +82,15 @@ class CourseCreate extends React.Component {
                 },
                 config
             );
-
+            this.props.updateLastChange(data.collectionChangeDate);
+            console.log('date');
+            console.log(data.collectionChangeDate);
+            // CHANGED FETCH STATUS FOR UPDATE A LIST OF TEACHER'S COURSES
+            this.props.updateFetchStatus(true);
             history.push(`/courses/edit/${data.course._id}`);
         } catch(error){
             console.log(error.response.data.error);
         }
-      
-      // console.log('onCreateHandler');
-
     }
 
     rednerActions() {
@@ -127,7 +128,9 @@ class CourseCreate extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return { teachersId: state.auth._id };
+    return { 
+        teachersId: state.auth._id
+    };
 }
 
-export default connect(mapStateToProps)(CourseCreate);
+export default connect(mapStateToProps, { updateLastChange, updateFetchStatus })(CourseCreate);

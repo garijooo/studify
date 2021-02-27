@@ -4,7 +4,8 @@ import { Switch, Router, Route } from 'react-router-dom';
 
 // subcomponents
 import Header from './extra/Header';
-import Helper from './extra/Helper'
+import Helper from './extra/Helper';
+import Help from './extra/Help';
 
 // auth system components
 import SignIn from './auth/SignIn';
@@ -13,7 +14,6 @@ import ForgotPass from './auth/ForgotPass';
 import ResetPass from './auth/ResetPass';
 
 // course components
-import CourseList from './courses/CourseList';
 import CourseCreate from './courses/CourseCreate';
 import CourseEdit from './courses/CourseEdit';
 import CourseDelete from './courses/CourseDelete';
@@ -37,6 +37,8 @@ class App extends React.Component{
                     <Route path="/profile" component={Header} />
                     <Route path="/courses" component={Header} />
                     <Switch>
+                        <Route exact path="/help" component={Help} />
+
                         <Route exact path="/" component={Helper} />    
                         <Route exact path="/profile/settings" component={ProfileSettings} />
                         <Route exact path="/profile/courses" component={ProfileCourses} />

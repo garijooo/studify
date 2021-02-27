@@ -1,23 +1,23 @@
 import {
     FETCH_COURSE,
     FETCH_COURSES,
-    FETCH_COURSES_BY_ID
+    UPDATE_LAST_CHANGE
 } from '../actions/types';
 
 const INITIAL_STATE = {
     courses: [],
-    coursesUser: [],
-    selectedCourse: {}
+    selectedCourse: {},
+    lastChange: null
 };
 
 export default (state = INITIAL_STATE, action) => {
     switch(action.type) {
         case FETCH_COURSES:
             return { ...state, courses: action.payload };
-        case FETCH_COURSES_BY_ID:
-            return { ...state, coursesUser: action.payload };
         case FETCH_COURSE:
             return { ...state, selectedCourse: action.payload };
+        case UPDATE_LAST_CHANGE:
+            return { ...state, lastChange: action.payload }
         default:
             return state;
     }
