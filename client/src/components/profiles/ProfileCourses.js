@@ -5,9 +5,10 @@ import { fetchTeachersCourses, updateFetchStatus } from '../../actions';
 import CourseList from '../courses/CourseList';
 //styles
 import '../../styles/main-screen.css';
+import '../../styles/main.css';
 
 class ProfileCourses extends React.Component {
-    state = { heading: '', error: null };
+    state = { heading: '', description: '', error: null };
 
     componentDidMount() {
         if(!localStorage.getItem("authtoken")) return history.push('/auth/signin');
@@ -34,22 +35,43 @@ class ProfileCourses extends React.Component {
     renderCreateSection = () => {
         return(
             <React.Fragment>
-                <div className="container__page__block-create">
-                    <form>
-                        <input 
-                            type="text"        
-                            onChange={e => this.setState({ heading: e.target.value })} 
-                        />
-                        <button 
-                            onClick={e => this.onCreateClick(e)}
-                            className="container__page__btn green-btn"
-                        >
-                        New course
-                        </button> 
-                    </form>
-                    <div className="red-text">
-                        {this.state.error && this.state.error} 
-                    </div>                                
+                <div className="profile__create">
+                    <form className="profile__create-inner">
+                      
+                            <h3>Create a new Course</h3>
+                            <label htmlFor="heading">Heading of the Course:</label>
+                            <input 
+                                id="heading"
+                                type="text"    
+                                placeholder="heading"    
+                                onChange={e => this.setState({ heading: e.target.value })} 
+                            />
+                            <label htmlFor="description">Description of the Course:</label>
+                            <textarea 
+                                id="description"
+                                placeholder="Write a descrption of the Course"
+                                cols="30"
+                                rows="5"
+                                wrap="off"
+                                maxLength="225"
+                                onChange={e => this.setState({ description: e.target.value })} 
+                            ></textarea>
+                            <div profile__create-inner-div>
+                                <input 
+                                    type="submit"
+                                    onClick={e => this.onCreateClick(e)}
+                                    value="Create"
+                                    className="green-btn"
+                                />
+                            </div>
+                            <div className="red-text">
+                                {this.state.error && this.state.error} 
+                            </div>  
+                        
+                    </form>   
+                    <div className="profile__create-inner">
+                        <h3>Statistics</h3>
+                    </div>                           
                 </div>
             </React.Fragment>
            
@@ -60,7 +82,7 @@ class ProfileCourses extends React.Component {
         return (
             <div className="container">
                 <div className="container__page">
-                Profile Courses
+                    Profile/My Courses
                 {this.props.role === 'teacher' && this.renderCreateSection()}
                 <CourseList courses={this.props.courses} />
                 </div>

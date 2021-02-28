@@ -1,4 +1,108 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+/*
+Container styles
+*/
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.container__page {
+    width: 80vw;
+    background:#fff;
+}
+/*
+Profile Courses styles
+*/
+.profile__create {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+
+.profile__create-inner {
+    width: 35vw;
+    padding: 30px;
+    position: relative;
+    max-width: 700px;
+    margin: 30px auto 0;
+    border-radius: 30px;
+    background: #dce2e9;
+}
+ .profile__create-inner input, .profile__create-inner textarea {
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 0 20px;
+    margin-bottom: 10px;
+    line-height: 40px;
+    border-width: 0;
+    border-radius: 20px;
+    font-family: 'Roboto', sans-serif;
+ }
+ .profile__create-inner div {
+     display: flex;
+     justify-content: center;
+     width: 100%;
+ }
+.profile__create-inner input[type="submit"] {
+    cursor: pointer;
+    font-weight: bold;
+    width: 50%;
+    margin-top: 30px;
+    background: #9fa8b4;
+    border-bottom: 4px solid #828fa0;
+    color: white;
+    transition: all 0.3s ease 0s;
+    font-size: 14px;
+ }
+.profile__create-inner input[type="submit"]:hover {
+    background: #a3b2c7;
+ }
+ .profile__create-inner textarea {
+    resize: none;
+ }
+ .profile__create-inner h3 {
+    margin-top: 0;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 24px;
+    color: #000;
+ }
+.profile__create form textarea {
+    outline: none;
+    resize: none;
+    overflow: auto;
+}
+.profile__create__btn {
+    border: none;
+    border-radius: 6px;
+    padding: 5px 10px;
+    transition: all 0.3s ease 0s;
+    outline: none;
+    cursor: pointer;
+}
+.green-btn {
+    background: #2c6814;
+}
+.green-btn:hover {
+    background: #66ac4a;
+}
+.red-btn {
+    background: #7a0000;
+}
+.profile__create .red-btn:hover {
+    background: #c92323;
+}
+
+.profile__create .red-text {
+    color: #7a0000;
+    font-weight: bold;
+}
+/*
+Course list styles
+*/
 .course__list {
     font-family: "Montserrat", sans-serif;
 }
@@ -14,4 +118,20 @@
 }
 .course__list__item-author {
     font-style: italic;
+}
+
+@media only screen and (max-width: 600px) {
+    .container__page {
+        width: 100%;
+    }
+    
+    .profile__create-inner {
+        width: 90vw;
+        padding: 30px;
+        position: relative;
+        max-width: 700px;
+        margin: 30px auto 0;
+        border-radius: 30px;
+        background: #dce2e9;
+    }
 }

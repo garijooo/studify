@@ -5,6 +5,10 @@ const CourseSchema = new mongoose.Schema({
         type: String, 
         required: [true, "Please provide a heading of the Course"]
     },
+    description: {
+        type: String,
+        required: [true, "Please provide Course's decription"]
+    },
     teachersId: {
         type: String,
         required: [true, "No teachers ID was sent"]
