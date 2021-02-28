@@ -1,7 +1,8 @@
 import {
     FETCH_COURSE,
     FETCH_COURSES,
-    UPDATE_LAST_CHANGE
+    UPDATE_LAST_CHANGE,
+    UPDATE_COURSE
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -17,7 +18,9 @@ export default (state = INITIAL_STATE, action) => {
         case FETCH_COURSE:
             return { ...state, selectedCourse: action.payload };
         case UPDATE_LAST_CHANGE:
-            return { ...state, lastChange: action.payload }
+            return { ...state, lastChange: action.payload };
+        case UPDATE_COURSE:
+            return { ...state, selectedCourse: action.payload };
         default:
             return state;
     }

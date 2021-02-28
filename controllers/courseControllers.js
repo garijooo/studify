@@ -4,10 +4,10 @@ const HandyStorage = require('handy-storage');
 const storage = new HandyStorage('./config/state.json');
 
 exports.createCourse = async (req, res, next) => {
-    const { heading, teachersId } = req.body;
+    const { heading, description, teachersId } = req.body;
     try {
         const course = await Course.create({
-            heading, teachersId
+            heading, teachersId, description
         });
         try {
             storage.setState({"collectionChangeDate": new Date()});
@@ -25,14 +25,12 @@ exports.createCourse = async (req, res, next) => {
 }
 
 exports.fetchCourseById = async (req, res, next) => {
-    const { _id } = req.params.id;
+    const _id = req.params.id;
     try{
-        const courses = await Course.findById(_id);
-        if(courses === []) return res.status(204).json({ success: true });
-        
+        const course = await Course.findById(_id);
         res.status(200).json({
             success: true, 
-            courses
+            course
         });
     } catch(e) {
         next(e);

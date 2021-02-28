@@ -1,7 +1,7 @@
 import React from 'react';
 import history from '../../history';
 import { connect } from 'react-redux';
-import { fetchTeachersCourses, updateFetchStatus } from '../../actions';
+import { fetchTeachersCourses, updateFetchStatus, updateCourse } from '../../actions';
 import CourseList from '../courses/CourseList';
 //styles
 import '../../styles/main-screen.css';
@@ -27,8 +27,11 @@ class ProfileCourses extends React.Component {
     onCreateClick = e => {
         e.preventDefault();
         if(!this.state.heading) return this.setState({ error: 'Please provide a heading!'});
+        if(!this.state.description) return this.setState({ error: 'Please provide a description!'});
         this.setState({ error: null});
-        history.push(`/courses/new/${this.state.heading}`);
+        const initCourse = { heading: this.state.heading, description: this.state.description };
+        this.props.updateCourse(initCourse);
+        history.push(`/courses/new/${initCourse.heading}`);
     }
 
 
@@ -56,7 +59,7 @@ class ProfileCourses extends React.Component {
                                 maxLength="225"
                                 onChange={e => this.setState({ description: e.target.value })} 
                             ></textarea>
-                            <div profile__create-inner-div>
+                            <div className="profile__create-inner-div">
                                 <input 
                                     type="submit"
                                     onClick={e => this.onCreateClick(e)}
@@ -84,7 +87,7 @@ class ProfileCourses extends React.Component {
                 <div className="container__page">
                     Profile/My Courses
                 {this.props.role === 'teacher' && this.renderCreateSection()}
-                <CourseList courses={this.props.courses} />
+                <CourseList courses={this.props.courses} type="teacher" />
                 </div>
             </div>
         )
@@ -96,7 +99,8 @@ const mapStateToProps = state => {
         id: state.auth._id,
         teachersLastChange: state.auth.teachersLastChange,
         fetchStatus: state.auth.fetchStatus,
-        courses: state.auth.myCourses
+        courses: state.auth.myCourses,
+        selectedCourse: state.courses.selectedCourse
     };
 }
-export default connect(mapStateToProps, { fetchTeachersCourses, updateFetchStatus })(ProfileCourses);
+export default connect(mapStateToProps, { fetchTeachersCourses, updateFetchStatus, updateCourse })(ProfileCourses);

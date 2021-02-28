@@ -13,7 +13,7 @@ const Modal = props => {
             >
                 <div className="header">{props.title}</div>
                 <div className="content">
-                    <p>{props.content}</p>
+                    {props.content}
                 </div>
                 <div className="actions">
                     {props.actions}

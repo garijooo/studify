@@ -1,36 +1,61 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 //styles
 import '../../styles/main-screen.css';
 import '../../styles/main.css';
+//icons
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 class CourseList extends React.Component {
-    state = { uploaded: false };
-    /*
-    componentDidMount() {
-        if(this.props.fetch === 'courses') this.props.fetchCourses();
-        else this.props.fetchMyCourses(localStorage.getItem("id"));
+    state = { class: '', changeId: null };
+
+    renderTeachersButtons(id) {
+        return(
+            <React.Fragment>
+                <Link className="" to={`/courses/edit/${id}`}>
+                    <EditIcon style={{color:'#6e7277'}} fontSize="large">                        
+                    </EditIcon>
+                </Link>
+                <Link to={`/courses/delete/${id}`}>
+                    <DeleteIcon style={{color:'#6e7277'}} fontSize="large">                        
+                    </DeleteIcon>
+                </Link>
+            </React.Fragment>
+        );
     }
-    */
-    
-    /*
-    componentDidMount() {
-        if(!this.props.courses) this.updateEmptyArray();
+    onEnter = e => {
+        let id = null;
+        if(e.target.parentNode.id === 'pre') id = e.target.parentElement.parentElement.id 
+        else id = e.target.parentElement.id;
+        this.setState({ changeId: id, class: 'show'}, function(){
+          //console.log(this.state.class+" "+this.state.changeId);  
+        });  
     }
-    updateEmptyArray = () => {
-        console.log()
-        this.props.courses = [ ...this.props.myCourses ];
+    onLeave = () => {
+        this.setState({ class: '', changeId: null});
     }
-    */
+
     renderCoursesList() {
         return this.props.courses.map(course => {
+            //const id  = course._id;
             return(
                 <div 
-                    key={course._id}
-                    className="course__list__item"
-                >
-                    <h1 className="course__list__item-heading">{course.heading}</h1>
-                    <p className="course__list__item-description">{`Description:`}</p>
-                    <p className="course__list__item-author">{`Made by ${course.teachersId}`}</p>
+                    key={course._id} 
+                    id={course._id}
+                    className="course__list__item" 
+                    onMouseEnter={this.onEnter}
+                    onMouseLeave={this.onLeave}
+                >   
+                    <div className="course__list__sub-item-first" id="pre">
+                        <h1 className="course__list__item-heading">{course.heading}</h1>
+                        <p className="course__list__item-description">{`Description: ${course.description}`}</p>
+                        <p className="course__list__item-author">{`Made by ${course.teachersId}`}</p>
+                    </div>
+                    <div id="pre" className={`course__list__sub-item-second ${this.state.changeId === course._id ? this.state.class : '' }`} id={course._id}>
+                        {this.props.type === 'teacher' ? this.renderTeachersButtons(course._id) : ''}
+                    </div>
+                    
                 </div>
             );
         });                
@@ -45,14 +70,5 @@ class CourseList extends React.Component {
         )
     }
 }
-/*
-const mapStateToProps = state => {
-    return { 
-        courses: state.courses.courses,
-        usersLastChange: state.auth.lastChange,
-        coursesUser: state.auth.myCourses,
-        teachersId: state.auth._id
-     };
-}
-*/
+
 export default CourseList;

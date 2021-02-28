@@ -1,8 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { fetchCourse } from '../../actions';
 
 class CourseEdit extends React.Component {
-    state = { inputType: 'text', currentCourse: [] };
-
+    //state = { inputType: 'text', currentCourse: [] };
+    componentDidMount() {
+        this.props.fetchCourse(this.props.match.params.id);
+    }
     //componentDidMount() {
     //
     //}
@@ -10,10 +14,16 @@ class CourseEdit extends React.Component {
     render() {
         return (
             <div>
-                Course Edit
+                <b>Course edit</b> 
+                <b>Heading:</b> {this.props.currentCourse.heading}
+                <b>Description:</b> {this.props.currentCourse.description}
             </div>
-        )
+        );
     }
 }
-
-export default CourseEdit;
+const mapStateToProps = state => {
+    return {
+        currentCourse: state.courses.selectedCourse
+    };
+}
+export default connect(mapStateToProps, { fetchCourse })(CourseEdit);

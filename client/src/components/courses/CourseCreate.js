@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { updateLastChange, updateFetchStatus } from '../../actions';
+import { updateLastChange, updateFetchStatus, updateCourse } from '../../actions';
 // history object
 import history from '../../history';
 // modal window
@@ -73,10 +73,12 @@ class CourseCreate extends React.Component {
             }
         };
         try {
+            console.log(this.props.selectedCourse.description);
             const { data } = await axios.post(
                 "/api/courses/create",
                 { 
-                    heading: this.props.match.params.heading,
+                    heading: this.props.selectedCourse.heading,
+                    description: this.props.selectedCourse.description,
                     teachersId: this.props.teachersId
                 },
                 config
@@ -85,6 +87,7 @@ class CourseCreate extends React.Component {
             this.props.updateLastChange(data.collectionChangeDate);
             // CHANGED FETCH STATUS FOR UPDATE A LIST OF TEACHER'S COURSES
             this.props.updateFetchStatus(true);
+            this.props.updateCourse({});
             history.push(`/courses/edit/${data.course._id}`);
         } catch(error){
             console.log(error.response.data.error);
@@ -111,7 +114,17 @@ class CourseCreate extends React.Component {
     }  
 
     renderContent() {
-        return `Are you sure you want to create a Course with heading: '${this.props.match.params.heading}'?`
+        return (
+            <React.Fragment>
+                <p>
+                    {`Are you sure you want to create a Course with heading: '${this.props.selectedCourse.heading}'?`}
+                </p>
+                <p>
+                    {`Course description is: '${this.props.selectedCourse.description}`}
+                </p>       
+            </React.Fragment>
+        
+        );
     }
     render() {
         return (
@@ -127,8 +140,9 @@ class CourseCreate extends React.Component {
 
 const mapStateToProps = state => {
     return { 
-        teachersId: state.auth._id
+        teachersId: state.auth._id,
+        selectedCourse: state.courses.selectedCourse
     };
 }
 
-export default connect(mapStateToProps, { updateLastChange, updateFetchStatus })(CourseCreate);
+export default connect(mapStateToProps, { updateLastChange, updateFetchStatus, updateCourse })(CourseCreate);

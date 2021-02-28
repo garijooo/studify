@@ -7,7 +7,9 @@ import {
     MY_COURSES,
     UPDATE_LAST_CHANGE,
     UPDATE_TEACHERS_LAST_CHANGE,
-    FETCH_STATUS
+    FETCH_STATUS,
+    UPDATE_COURSE,
+    INIT_COURSE
 } from './types';
 
 const config = {
@@ -52,6 +54,20 @@ export const updateFetchStatus = value => {
     return {
         type: FETCH_STATUS,
         payload: value
+    }
+}
+
+export const initCourse = course => {
+    return {
+        type: INIT_COURSE,
+        payload: course
+    }
+}
+
+export const updateCourse = course => {
+    return {
+        type: UPDATE_COURSE,
+        payload: course
     }
 }
 
