@@ -1,9 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
 //styles
 import '../../styles/main-screen.css';
+import '../../styles/main.css';
 
 class CourseList extends React.Component {
+    state = { uploaded: false };
     /*
     componentDidMount() {
         if(this.props.fetch === 'courses') this.props.fetchCourses();
@@ -23,17 +24,22 @@ class CourseList extends React.Component {
     renderCoursesList() {
         return this.props.courses.map(course => {
             return(
-                <div key={course._id}>
-                    Course heading: {course.heading}
-                    Course author's ID: {course.teachersId}
+                <div 
+                    key={course._id}
+                    className="course__list__item"
+                >
+                    <h1 className="course__list__item-heading">{course.heading}</h1>
+                    <p className="course__list__item-description">{`Description:`}</p>
+                    <p className="course__list__item-author">{`Made by ${course.teachersId}`}</p>
                 </div>
             );
-        });
+        });                
     }
+
     render() {
         return (
-            <div >
-                Courses list
+            <div className="course__list">
+                <h1>Courses list</h1>
                 {this.renderCoursesList()}
             </div>
         )
@@ -49,7 +55,4 @@ const mapStateToProps = state => {
      };
 }
 */
-const mapStateToProps = state => {
-    return { myCourses: state.auth.myCourses };
-}
-export default connect(mapStateToProps)(CourseList);
+export default CourseList;

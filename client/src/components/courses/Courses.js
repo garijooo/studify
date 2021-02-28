@@ -8,7 +8,6 @@ import '../../styles/main-screen.css';
 
 class Courses extends React.Component {
     componentDidMount() {
-        //if(lastChange)
         this.check();
     }
     check = async () => {
@@ -20,11 +19,9 @@ class Courses extends React.Component {
         try {
            const { data } = await axios.get("/api/courses/changed", config);
            if(this.props.lastChange < data.collectionChangeDate || this.props.lastChange === null) {
-               console.log('got it!');
                 this.props.fetchCourses();
                 this.props.updateLastChange(data.collectionChangeDate);
             }
-           console.log(`Last change was in: ${this.props.lastChange}`);
         }
         catch (err){
             console.log(err);

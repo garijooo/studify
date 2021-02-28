@@ -6,21 +6,19 @@ const storage = new HandyStorage('./config/state.json');
 exports.createCourse = async (req, res, next) => {
     const { heading, teachersId } = req.body;
     try {
-        //await Course.watch().on('change', data => {
-        //   storage.setState({"collectionChangeDate": new Date()});
-        //}); 
-        
         const course = await Course.create({
             heading, teachersId
         });
-        storage.setState({"collectionChangeDate": new Date()});
-        
-        res.status(201).json({
-            success: true, 
-            course,
-            date,
-            collectionChangeDate: storage.state.collectionChangeDate
-        });
+        try {
+            storage.setState({"collectionChangeDate": new Date()});
+            res.status(201).json({
+                success: true, 
+                course,
+                collectionChangeDate: storage.state.collectionChangeDate
+            });
+        } catch (err) {
+            next(err);
+        }
     } catch(e){
         next(e);
     }
@@ -40,7 +38,6 @@ exports.fetchCourseById = async (req, res, next) => {
         next(e);
     }
 }
-
 exports.fetchCourses = async (req, res, next) => {
     try {
         const courses = await Course.find({});
@@ -67,10 +64,18 @@ exports.fetchCoursesById = async (req, res, next) => {
         next(e);
     }
 }
-
 exports.changeCheck = (req, res, next) => {
     try {
-        if(storage.state.collectionChangeDate === null) storage.setState({"collectionChangeDate": new Date()});
+        if(storage.state.collectionChangeDate === null) {
+            storage.setState({"collectionChangeDate": new Date()}).then(() => {
+                res.status(200).json({
+                    success: true, 
+                    collectionChangeDate: storage.state.collectionChangeDate
+                });
+            }).catch(e => {
+                next(e);
+            });
+        }
         res.status(200).json({
             success: true, 
             collectionChangeDate: storage.state.collectionChangeDate

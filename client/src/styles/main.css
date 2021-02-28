@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+.course__list {
+    font-family: "Montserrat", sans-serif;
+}
+.course__list h1 {
+    font-size: 2rem;
+}
+.course__list__item {
+    font-size: 14px;
+    margin-bottom: 2.2em;
+}
+.course__list__item-heading {
+    font-size: 1.6em;
+}
+.course__list__item-author {
+    font-style: italic;
+}

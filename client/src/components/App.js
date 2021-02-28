@@ -1,6 +1,5 @@
 import React from 'react';
-import axios from 'axios';
-import { Switch, Router, Route } from 'react-router-dom';
+import { Switch, Router, Route, Redirect } from 'react-router-dom';
 
 // subcomponents
 import Header from './extra/Header';
@@ -39,7 +38,7 @@ class App extends React.Component{
                     <Switch>
                         <Route exact path="/help" component={Help} />
 
-                        <Route exact path="/" component={Helper} />    
+                        <Redirect exact from='/' to="/courses" />   
                         <Route exact path="/profile/settings" component={ProfileSettings} />
                         <Route exact path="/profile/courses" component={ProfileCourses} />
                         <Route exact path="/profile/:username" component={Profile} />

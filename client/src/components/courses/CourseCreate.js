@@ -72,7 +72,6 @@ class CourseCreate extends React.Component {
                 "Content-Type": "application/json"
             }
         };
-        console.log(this.props.teachersId);
         try {
             const { data } = await axios.post(
                 "/api/courses/create",
@@ -82,9 +81,8 @@ class CourseCreate extends React.Component {
                 },
                 config
             );
+
             this.props.updateLastChange(data.collectionChangeDate);
-            console.log('date');
-            console.log(data.collectionChangeDate);
             // CHANGED FETCH STATUS FOR UPDATE A LIST OF TEACHER'S COURSES
             this.props.updateFetchStatus(true);
             history.push(`/courses/edit/${data.course._id}`);
