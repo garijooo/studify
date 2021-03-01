@@ -6,6 +6,7 @@ class CourseEdit extends React.Component {
     //state = { inputType: 'text', currentCourse: [] };
     componentDidMount() {
         this.props.fetchCourse(this.props.match.params.id);
+        console.log('fetched on edit');
     }
     //componentDidMount() {
     //

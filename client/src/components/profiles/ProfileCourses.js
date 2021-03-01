@@ -55,7 +55,7 @@ class ProfileCourses extends React.Component {
                                 placeholder="Write a descrption of the Course"
                                 cols="30"
                                 rows="5"
-                                wrap="off"
+                                wrap="soft"
                                 maxLength="225"
                                 onChange={e => this.setState({ description: e.target.value })} 
                             ></textarea>

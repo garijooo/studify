@@ -75,13 +75,14 @@ Profile Courses styles
     resize: none;
     overflow: auto;
 }
-.profile__create__btn {
+.profile__action__btns a, button {
     border: none;
     border-radius: 6px;
     padding: 5px 10px;
     transition: all 0.3s ease 0s;
     outline: none;
     cursor: pointer;
+    color:#fff;
 }
 .green-btn {
     background: #2c6814;
@@ -92,6 +93,17 @@ Profile Courses styles
 .red-btn {
     background: #7a0000;
 }
+.red-btn:hover {
+    background: #c92323;
+}
+.yellow-btn {
+    background: #f3d241;
+}
+.yellow-btn:hover {
+    background: #eed97e;
+}
+
+/*
 .profile__create .red-btn:hover {
     background: #c92323;
 }
@@ -100,6 +112,8 @@ Profile Courses styles
     color: #7a0000;
     font-weight: bold;
 }
+*/
+
 /*
 Course list styles
 */
@@ -132,6 +146,7 @@ Course list styles
 }
 .course__list__sub-item-first {
     width: 60%;
+    cursor: pointer;
 }
 .course__list__sub-item-second {
     width: 40%;
@@ -146,8 +161,24 @@ Course list styles
 }
 .course__list__sub-item-second.show a {
     opacity: 1;
+    
 }
-
+.edit-icon {
+    transition: all 0.3s ease 0s;
+    color:#497c49;
+ }
+.edit-icon:hover {
+    transition: all 0.3s ease 0s;
+    color:#3ea13e;
+}
+.delete-icon {
+    transition: all 0.3s ease 0s;
+    color: #7a0000;
+}
+.delete-icon:hover {
+    transition: all 0.3s ease 0s;
+    color: #c92323;
+}
 @media only screen and (max-width: 600px) {
     .container__page {
         width: 100%;

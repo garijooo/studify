@@ -1,13 +1,89 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { fetchCourse, updateLastChange, updateFetchStatus, updateCourse } from '../../actions';
+// history object
+import history from '../../history';
+// modal window
+import Modal from '../extra/Modal';
 
 class CourseDelete extends React.Component {
+    componentDidMount() {
+        if(!this.props.match.params.id) return history.push('/profile/courses');
+        this.props.fetchCourse(this.props.match.params.id);
+    }
+    onDeleteHandler = async () => {
+        const config = {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        };
+        try {
+            const { data } = await axios.delete(
+                `/api/courses/delete/${this.props.match.params.id}`,
+                config
+            );
+            this.props.updateLastChange(data.collectionChangeDate);
+            // CHANGED FETCH STATUS FOR UPDATE A LIST OF TEACHER'S COURSES
+            this.props.updateFetchStatus(true);
+            this.props.updateCourse({});
+            history.push('/profile/courses');
+        } catch(error){
+            console.log(error.response.data.error);
+        }
+    }
+    rednerActions() {
+        return (
+            <React.Fragment>
+                <button 
+                    onClick={this.onDeleteHandler} 
+                    className="red-btn"
+                >
+                Delete
+                </button>
+                <Link 
+                    to="/profile/courses" 
+                    className="yellow-btn"
+                >
+                Cancel
+                </Link>
+            </React.Fragment>
+        ); 
+    }  
+
+    renderContent() {
+        return (
+            <React.Fragment>
+                <p>
+                    {`Are you sure you want to delete a Course with heading: '${this.props.currentCourse.heading}'?`}
+                </p>      
+            </React.Fragment>
+        
+        );
+    }
     render() {
         return (
-            <div>
-                Course delete
-            </div>
-        )
+            <Modal
+                title="Create Course"
+                content={this.renderContent()}
+                actions={this.rednerActions()}
+                onDismiss={() => history.push('/profile/courses')}
+            />
+        );
     }
 }
-
-export default CourseDelete;
+const mapStateToProps = state => {
+    return {
+        currentCourse: state.courses.selectedCourse
+    };
+}
+export default  connect(
+    mapStateToProps, 
+    { 
+        fetchCourse,
+        updateCourse, 
+        updateLastChange, 
+        updateFetchStatus 
+    }
+    )(CourseDelete);

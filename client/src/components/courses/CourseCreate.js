@@ -73,7 +73,6 @@ class CourseCreate extends React.Component {
             }
         };
         try {
-            console.log(this.props.selectedCourse.description);
             const { data } = await axios.post(
                 "/api/courses/create",
                 { 
@@ -99,13 +98,13 @@ class CourseCreate extends React.Component {
             <React.Fragment>
                 <button 
                     onClick={this.onCreateHandler} 
-                    className="container__page__btn green-btn"
+                    className="green-btn"
                 >
                 Create
                 </button>
                 <Link 
                     to="/profile/courses" 
-                    className="container__page__btn red-btn"
+                    className="yellow-btn"
                 >
                 Cancel
                 </Link>

@@ -15,7 +15,7 @@ const Modal = props => {
                 <div className="content">
                     {props.content}
                 </div>
-                <div className="actions">
+                <div className="actions profile__action__btns">
                     {props.actions}
                 </div>
             </div>

@@ -23,7 +23,23 @@ exports.createCourse = async (req, res, next) => {
         next(e);
     }
 }
-
+exports.deleteCourse = async (req, res, next) => {
+    const _id = req.params.id;
+    try {   
+        await Course.deleteOne({ _id });
+        try {
+            storage.setState({"collectionChangeDate": new Date()});
+            res.status(200).json({
+                success: true,
+                collectionChangeDate: storage.state.collectionChangeDate
+            });
+        } catch (err) {
+            next(err);
+        }
+    } catch (e) {
+        next(e);
+    }
+}
 exports.fetchCourseById = async (req, res, next) => {
     const _id = req.params.id;
     try{
