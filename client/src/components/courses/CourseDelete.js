@@ -20,15 +20,16 @@ class CourseDelete extends React.Component {
             }
         };
         try {
-            const { data } = await axios.delete(
+            await axios.delete(
                 `/api/courses/delete/${this.props.match.params.id}`,
                 config
             );
-            this.props.updateLastChange(data.collectionChangeDate);
+            //this.props.updateLastChange(data.collectionChangeDate);
             // CHANGED FETCH STATUS FOR UPDATE A LIST OF TEACHER'S COURSES
             this.props.updateFetchStatus(true);
             this.props.updateCourse({});
-            history.push('/profile/courses');
+            alert('A course was deleted!');
+            history.push('/courses');
         } catch(error){
             console.log(error.response.data.error);
         }

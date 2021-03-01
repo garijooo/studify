@@ -83,7 +83,7 @@ class CourseCreate extends React.Component {
                 config
             );
 
-            this.props.updateLastChange(data.collectionChangeDate);
+            //this.props.updateLastChange(data.collectionChangeDate);
             // CHANGED FETCH STATUS FOR UPDATE A LIST OF TEACHER'S COURSES
             this.props.updateFetchStatus(true);
             this.props.updateCourse({});
