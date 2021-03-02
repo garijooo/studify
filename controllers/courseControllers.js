@@ -35,13 +35,19 @@ exports.deleteCourse = async (req, res, next) => {
     try {   
         await Course.deleteOne({ _id });
         try {
-            storage.setState({"collectionChangeDate": new Date()});
-            res.status(200).json({
-                success: true
-            });
-        } catch (err) {
-            next(err);
-        }
+            const rootPath = path.join(__dirname, '../');
+            await fs.promises.rmdir(`${rootPath}public\\${_id}`);
+            try {
+                storage.setState({"collectionChangeDate": new Date()});
+                res.status(200).json({
+                    success: true
+                });
+            } catch (err) {
+                next(err);
+            }
+        } catch(e) {
+            next(e);
+        } 
     } catch (e) {
         next(e);
     }
