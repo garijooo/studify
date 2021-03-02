@@ -1,7 +1,7 @@
 import React from 'react';
 import history from '../../history';
 import { connect } from 'react-redux';
-import { fetchTeachersCourses, updateFetchStatus, updateCourse } from '../../actions';
+import { fetchTeachersCourses, updateFetchStatus, initCourse } from '../../actions';
 import CourseList from '../courses/CourseList';
 //styles
 import '../../styles/main-screen.css';
@@ -13,9 +13,9 @@ class ProfileCourses extends React.Component {
     componentDidMount() {
         if(!localStorage.getItem("authtoken")) return history.push('/auth/signin');
         this.fetchCourses();
-        this.props.updateCourse({
-            blocks: []
-        });
+        //this.props.updateCourse({
+        //    blocks: []
+        //});
     }
 
     fetchCourses = () => {
@@ -33,7 +33,7 @@ class ProfileCourses extends React.Component {
         if(!this.state.description) return this.setState({ error: 'Please provide a description!'});
         this.setState({ error: null});
         const initCourse = { heading: this.state.heading, description: this.state.description };
-        this.props.updateCourse(initCourse);
+        this.props.initCourse(initCourse);
         history.push(`/courses/new/${initCourse.heading}`);
     }
 
@@ -106,4 +106,4 @@ const mapStateToProps = state => {
         selectedCourse: state.courses.selectedCourse
     };
 }
-export default connect(mapStateToProps, { fetchTeachersCourses, updateFetchStatus, updateCourse })(ProfileCourses);
+export default connect(mapStateToProps, { fetchTeachersCourses, updateFetchStatus, initCourse })(ProfileCourses);

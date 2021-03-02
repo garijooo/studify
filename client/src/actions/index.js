@@ -2,6 +2,7 @@ import axios from 'axios';
 import {
     SIGN_IN,
     SIGN_OUT,
+    INIT_COURSE,
     FETCH_COURSE,
     FETCH_COURSES,
     MY_COURSES,
@@ -55,7 +56,12 @@ export const updateFetchStatus = value => {
         payload: value
     }
 }
-
+export const initCourse = (initCourse) => {
+    return {
+        type: INIT_COURSE, 
+        payload: initCourse
+    }
+}
 export const updateCourse = (id, course) => async dispatch => {
     try {
         const { data } = await axios.patch(`/api/courses/update/course/${id}`, course, config);

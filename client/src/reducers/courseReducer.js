@@ -2,10 +2,12 @@ import {
     FETCH_COURSE,
     FETCH_COURSES,
     UPDATE_LAST_CHANGE,
-    UPDATE_COURSE
+    UPDATE_COURSE, 
+    INIT_COURSE
 } from '../actions/types';
 
 const INITIAL_STATE = {
+    initCourse: {},
     courses: [],
     currentCourse: {
         title: null,
@@ -18,6 +20,8 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
     switch(action.type) {
+        case INIT_COURSE:
+            return { ...state, initCourse: { ...action.payload } };
         case FETCH_COURSES:
             return { ...state, courses: [ ...action.payload ] };
         case FETCH_COURSE:

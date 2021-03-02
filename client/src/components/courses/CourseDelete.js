@@ -27,7 +27,7 @@ class CourseDelete extends React.Component {
             //this.props.updateLastChange(data.collectionChangeDate);
             // CHANGED FETCH STATUS FOR UPDATE A LIST OF TEACHER'S COURSES
             this.props.updateFetchStatus(true);
-            this.props.updateCourse({});
+            //this.props.updateCourse({});
             alert('A course was deleted!');
             history.push('/courses');
         } catch(error){
@@ -66,7 +66,7 @@ class CourseDelete extends React.Component {
     render() {
         return (
             <Modal
-                title="Create Course"
+                title="Delete Course"
                 content={this.renderContent()}
                 actions={this.rednerActions()}
                 onDismiss={() => history.push('/profile/courses')}
@@ -76,7 +76,7 @@ class CourseDelete extends React.Component {
 }
 const mapStateToProps = state => {
     return {
-        currentCourse: state.courses.selectedCourse
+        currentCourse: state.courses.currentCourse
     };
 }
 export default  connect(

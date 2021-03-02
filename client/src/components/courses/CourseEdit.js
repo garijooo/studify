@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { fetchCourse, updateCourse } from '../../actions';
 
@@ -32,10 +33,27 @@ class CourseEdit extends React.Component {
         history.push('/profile/courses');
     }
 
-    onFileUpload = (e) => {
+    onFileUpload = async (e) => {
         e.preventDefault();
-        console.log(e.target);
+        const formData = new FormData();
+        const imagedata = document.querySelector('input[type="file"]').files[0];
+        formData.append("data", imagedata);
+        const id = this.props.match.params.id;
+        try {
+            const { data } = await axios.post(               
+                `/api/upload/${this.state.type}`,
+                id,
+                formData
+            );
+            //console.log(data);
+            //console.log(data.data);
+            //this.setState({ data: data.data });
+        } catch(error) {
+            console.log(error.response.data.error);
+            this.setState({ error: error.response.data.error });
+        }
     }
+
     onAddTextBlock = (e) => {
         e.preventDefault();
         this.checkAuth();

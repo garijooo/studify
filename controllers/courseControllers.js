@@ -1,5 +1,7 @@
 
 const { Course } = require('../models/Course');
+const fs = require('fs');
+const path = require('path');
 const HandyStorage = require('handy-storage');
 const storage = new HandyStorage('./config/state.json');
 
@@ -10,22 +12,28 @@ exports.createCourse = async (req, res, next) => {
             heading, teachersId, description
         });
         try {
-            storage.setState({"collectionChangeDate": new Date()});
-            res.status(201).json({
-                success: true, 
-                course
-            });
-        } catch (err) {
-            next(err);
+            const rootPath = path.join(__dirname, '../');
+            await fs.promises.mkdir(`${rootPath}public\\${course._id}`);
+            try {
+                storage.setState({"collectionChangeDate": new Date()});
+                res.status(201).json({
+                    success: true, 
+                    course
+                });
+            } catch(e) {
+                next(e);
+            }
+        } catch(e){
+            next(e);
         }
     } catch(e){
         next(e);
     }
 }
 exports.deleteCourse = async (req, res, next) => {
-    const { id } = req.params;
+    const _id  = req.params.id;
     try {   
-        await Course.deleteOne({ id });
+        await Course.deleteOne({ _id });
         try {
             storage.setState({"collectionChangeDate": new Date()});
             res.status(200).json({

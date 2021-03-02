@@ -1,8 +1,10 @@
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_OUT = 'SIGN_OUT';
 
+export const INIT_COURSE = 'INIT_COURSE';
 export const UPDATE_COURSE = 'UPDATE_COURSE';
 export const UPDATE_COURSE_EDIT = 'UPDATE_COURSE_EDIT';
+
 
 export const FETCH_COURSE = 'FETCH_COURSE';
 export const FETCH_COURSES = 'FETCH_COURSES';

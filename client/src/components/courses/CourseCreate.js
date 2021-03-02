@@ -76,13 +76,13 @@ class CourseCreate extends React.Component {
             const { data } = await axios.post(
                 "/api/courses/create",
                 { 
-                    heading: this.props.selectedCourse.heading,
-                    description: this.props.selectedCourse.description,
+                    heading: this.props.initCourse.heading,
+                    description: this.props.initCourse.description,
                     teachersId: this.props.teachersId
                 },
                 config
             );
-
+            console.log('done');
             //this.props.updateLastChange(data.collectionChangeDate);
             // CHANGED FETCH STATUS FOR UPDATE A LIST OF TEACHER'S COURSES
             this.props.updateFetchStatus(true);
@@ -116,10 +116,10 @@ class CourseCreate extends React.Component {
         return (
             <React.Fragment>
                 <p>
-                    {`Are you sure you want to create a Course with heading: '${this.props.selectedCourse.heading}'?`}
+                    {`Are you sure you want to create a Course with heading: '${this.props.initCourse.heading}'?`}
                 </p>
                 <p>
-                    {`Course description is: '${this.props.selectedCourse.description}`}
+                    {`Course description is: '${this.props.initCourse.description}`}
                 </p>       
             </React.Fragment>
         
@@ -140,7 +140,7 @@ class CourseCreate extends React.Component {
 const mapStateToProps = state => {
     return { 
         teachersId: state.auth._id,
-        selectedCourse: state.courses.selectedCourse
+        initCourse: state.courses.initCourse
     };
 }
 
