@@ -13,6 +13,9 @@ class ProfileCourses extends React.Component {
     componentDidMount() {
         if(!localStorage.getItem("authtoken")) return history.push('/auth/signin');
         this.fetchCourses();
+        this.props.updateCourse({
+            blocks: []
+        });
     }
 
     fetchCourses = () => {

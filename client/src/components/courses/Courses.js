@@ -18,8 +18,6 @@ class Courses extends React.Component {
         };
         try {
            const { data } = await axios.get("/api/courses/changed", config);
-           console.log(this.props.lastChange);
-           console.log(data.collectionChangeDate );
            if(this.props.lastChange < data.collectionChangeDate || this.props.lastChange === null) {
                 this.props.fetchCourses();
                 this.props.updateLastChange(data.collectionChangeDate);

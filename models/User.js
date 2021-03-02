@@ -31,7 +31,7 @@ const UserSchema = new mongoose.Schema({
         required: [true, "Please select a role"],
     }, 
     courses: {
-        type: [Number]
+        type: [String]
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date

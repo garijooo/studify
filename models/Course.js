@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { BlockSchema } = require('./Block');
 
 const CourseSchema = new mongoose.Schema({
     heading: {
@@ -13,14 +14,7 @@ const CourseSchema = new mongoose.Schema({
         type: String,
         required: [true, "No teachers ID was sent"]
     },
-    blocks: [
-        {
-            type: String,
-            title: String,
-            text: String,
-            url: String
-        }
-    ]
+    blocks: [BlockSchema]
 });
 
 const Course =  mongoose.model('Course', CourseSchema);

@@ -89,7 +89,7 @@ class CourseCreate extends React.Component {
             this.props.updateCourse({});
             history.push(`/courses/edit/${data.course._id}`);
         } catch(error){
-            console.log(error.response.data.error);
+            console.log(error);
         }
     }
 

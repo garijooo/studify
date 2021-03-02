@@ -8,8 +8,7 @@ import {
     UPDATE_LAST_CHANGE,
     UPDATE_TEACHERS_LAST_CHANGE,
     FETCH_STATUS,
-    UPDATE_COURSE,
-    INIT_COURSE
+    UPDATE_COURSE
 } from './types';
 
 const config = {
@@ -57,26 +56,24 @@ export const updateFetchStatus = value => {
     }
 }
 
-export const initCourse = course => {
-    return {
-        type: INIT_COURSE,
-        payload: course
-    }
-}
-
-export const updateCourse = course => {
-    return {
-        type: UPDATE_COURSE,
-        payload: course
+export const updateCourse = (id, course) => async dispatch => {
+    try {
+        const { data } = await axios.patch(`/api/courses/update/course/${id}`, course, config);
+        dispatch({
+            type: UPDATE_COURSE,
+            payload: data.course   
+        });
+    } catch(err) {
+        console.log(err);
     }
 }
 
 export const fetchCourse = id => async dispatch => {
     try { 
-        const response = await axios.get(`/api/courses/fetch/course/${id}`, config);
+        const { data } = await axios.get(`/api/courses/fetch/course/${id}`, config);
         dispatch({
             type: FETCH_COURSE,
-            payload: response.data.course   
+            payload: data.course   
         });
     } catch(err) {
         console.log(err);

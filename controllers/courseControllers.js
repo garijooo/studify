@@ -13,8 +13,7 @@ exports.createCourse = async (req, res, next) => {
             storage.setState({"collectionChangeDate": new Date()});
             res.status(201).json({
                 success: true, 
-                course,
-                collectionChangeDate: storage.state.collectionChangeDate
+                course
             });
         } catch (err) {
             next(err);
@@ -24,14 +23,13 @@ exports.createCourse = async (req, res, next) => {
     }
 }
 exports.deleteCourse = async (req, res, next) => {
-    const _id = req.params.id;
+    const { id } = req.params;
     try {   
-        await Course.deleteOne({ _id });
+        await Course.deleteOne({ id });
         try {
             storage.setState({"collectionChangeDate": new Date()});
             res.status(200).json({
-                success: true,
-                collectionChangeDate: storage.state.collectionChangeDate
+                success: true
             });
         } catch (err) {
             next(err);
@@ -40,7 +38,27 @@ exports.deleteCourse = async (req, res, next) => {
         next(e);
     }
 }
-exports.fetchCourseById = async (req, res, next) => {
+exports.updateCourse = async (req, res, next) => {
+    const { id } = req.params;
+    const { blocks } = req.body;
+    try {
+        const course = await Course.findById(id);
+        course.blocks = [ ...blocks ];
+        course.save();
+        try {
+            storage.setState({"collectionChangeDate": new Date()});
+            res.status(200).json({
+                success: true,
+                course
+            });
+        } catch (err) {
+            next(err);
+        }
+    } catch(e) {
+        next(e);    
+    }
+}
+exports.fetchCourse = async (req, res, next) => {
     const _id = req.params.id;
     try{
         const course = await Course.findById(_id);
