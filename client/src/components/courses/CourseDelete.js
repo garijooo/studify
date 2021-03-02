@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { fetchCourse, updateLastChange, updateFetchStatus, updateCourse } from '../../actions';
+import { fetchCourse, updateFetchStatus, initCourse } from '../../actions';
 // history object
 import history from '../../history';
 // modal window
@@ -24,10 +24,9 @@ class CourseDelete extends React.Component {
                 `/api/courses/delete/${this.props.match.params.id}`,
                 config
             );
-            //this.props.updateLastChange(data.collectionChangeDate);
             // CHANGED FETCH STATUS FOR UPDATE A LIST OF TEACHER'S COURSES
             this.props.updateFetchStatus(true);
-            //this.props.updateCourse({});
+            this.props.initCourse({});
             alert('A course was deleted!');
             history.push('/courses');
         } catch(error){
@@ -83,8 +82,7 @@ export default  connect(
     mapStateToProps, 
     { 
         fetchCourse,
-        updateCourse, 
-        updateLastChange, 
+        initCourse,
         updateFetchStatus 
     }
     )(CourseDelete);

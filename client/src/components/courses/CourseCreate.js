@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { updateLastChange, updateFetchStatus, updateCourse } from '../../actions';
+import { updateLastChange, updateFetchStatus, initCourse } from '../../actions';
 // history object
 import history from '../../history';
 // modal window
@@ -66,7 +66,8 @@ class CourseCreate extends React.Component {
         if(!this.props.match.params.heading) history.push('/profile/courses');
     }
 
-    onCreateHandler = async () => {
+    onCreateHandler = async e => {
+        e.preventDefault();
         const config = {
             headers: {
                 "Content-Type": "application/json"
@@ -76,17 +77,16 @@ class CourseCreate extends React.Component {
             const { data } = await axios.post(
                 "/api/courses/create",
                 { 
-                    heading: this.props.initCourse.heading,
-                    description: this.props.initCourse.description,
+                    heading: this.props.course.heading,
+                    description: this.props.course.description,
                     teachersId: this.props.teachersId
                 },
                 config
             );
-            console.log('done');
             //this.props.updateLastChange(data.collectionChangeDate);
             // CHANGED FETCH STATUS FOR UPDATE A LIST OF TEACHER'S COURSES
             this.props.updateFetchStatus(true);
-            this.props.updateCourse({});
+            this.props.initCourse({});
             history.push(`/courses/edit/${data.course._id}`);
         } catch(error){
             console.log(error);
@@ -116,10 +116,10 @@ class CourseCreate extends React.Component {
         return (
             <React.Fragment>
                 <p>
-                    {`Are you sure you want to create a Course with heading: '${this.props.initCourse.heading}'?`}
+                    {`Are you sure you want to create a Course with heading: '${this.props.course.heading}'?`}
                 </p>
                 <p>
-                    {`Course description is: '${this.props.initCourse.description}`}
+                    {`Course description is: '${this.props.course.description}`}
                 </p>       
             </React.Fragment>
         
@@ -140,8 +140,8 @@ class CourseCreate extends React.Component {
 const mapStateToProps = state => {
     return { 
         teachersId: state.auth._id,
-        initCourse: state.courses.initCourse
+        course: state.courses.initCourse
     };
 }
 
-export default connect(mapStateToProps, { updateLastChange, updateFetchStatus, updateCourse })(CourseCreate);
+export default connect(mapStateToProps, { updateLastChange, updateFetchStatus, initCourse })(CourseCreate);
