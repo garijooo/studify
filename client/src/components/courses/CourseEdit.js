@@ -7,7 +7,7 @@ import history from '../../history';
 
 class CourseEdit extends React.Component {
     //state = { inputType: 'text', currentCourse: [] };
-    state = { blocks: [], currentType: 'title', text: '' };
+    state = { blocks: [], currentType: 'title', text: '', file: null, url: '', images: [] };
     componentDidMount() {
         this.updateState();
     }
@@ -15,11 +15,33 @@ class CourseEdit extends React.Component {
     checkAuth = () => {
         if(this.props.currentCourse.teachersId !== this.props.teachersId) return history.push('/courses');
     }
-    updateState = async () => {
-        await this.props.fetchCourse(this.props.match.params.id);
-        this.setState({ blocks: [ ...this.props.currentCourse.blocks]});
+    updateImages = async block => {
+        try {
+            const res = await axios({
+                method: 'get',
+                url: `/static/public/${this.props.match.params.id}/${block.url}`,
+                responseType: 'blob'
+            });
+            let imageUrl = (window.URL ? window.URL : window.webkitURL).createObjectURL(res.data);
+            this.setState({ images: [ ...this.state.images, 
+                    { order: block.order, imgUrl: imageUrl } 
+                ] });   
+        } catch (err) {
+            console.log(err);
+        }
     }
-
+    updateState = async () => {
+        try {
+            await this.props.fetchCourse(this.props.match.params.id);
+            this.setState({ blocks: [ ...this.props.currentCourse.blocks]});
+            this.state.blocks.filter(block => block.type === 'image').map(block => {
+                console.log('entered!');
+                this.updateImages(block);
+            });                 
+        } catch (err) {
+            console.log(err);
+        }
+    }
     onSaveCourse = e => {
         e.preventDefault();
         this.checkAuth();
@@ -36,21 +58,29 @@ class CourseEdit extends React.Component {
     onFileUpload = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        const imagedata = document.querySelector('input[type="file"]').files[0];
-        formData.append("data", imagedata);
-        const id = this.props.match.params.id;
+        formData.append('image', this.state.file);
+        formData.append('id', this.props.match.params.id);
+        const config = {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        };        
+
         try {
             const { data } = await axios.post(               
-                `/api/upload/${this.state.type}`,
-                id,
-                formData
+                `/api/upload/${this.state.currentType}`,
+                formData,
+                config
             );
-            //console.log(data);
-            //console.log(data.data);
-            //this.setState({ data: data.data });
+            this.checkAuth();
+            const block = {
+                order: this.state.blocks.length,
+                type: this.state.currentType,
+                url: data.data
+            }
+            this.setState({ blocks: [ ...this.state.blocks, block ], file: null });
         } catch(error) {
-            console.log(error.response.data.error);
-            this.setState({ error: error.response.data.error });
+            console.log('The file isn not uploaded :(');
         }
     }
 
@@ -64,6 +94,7 @@ class CourseEdit extends React.Component {
         }
         this.setState({ blocks: [ ...this.state.blocks, block ], text: '' });
     }
+    
     renderBlockAddingMenu() {
         switch(this.state.currentType) {
             case 'title':
@@ -93,6 +124,7 @@ class CourseEdit extends React.Component {
                         <input
                             name="asset"
                             type="file"
+                            onChange={e => this.setState({ file: e.target.files[0] })}
                             accept=".jpg, .jpeg, .png"
                         />
                        <input type="submit" /> 
@@ -127,6 +159,19 @@ class CourseEdit extends React.Component {
                 return <p>No blocks yet</p>;
         }
     }
+
+    displayImage = block => {
+        let imgUrl = '';
+        if(this.state.images.filter(img => { return img.order === block.order })[0]){
+            const image = this.state.images.filter(img => { return img.order === block.order })[0];
+            imgUrl = image.imgUrl;
+        }
+        return(
+            <img alt="an image" key={block.order} src={imgUrl}></img>
+        );
+        
+    }
+
     renderBlocks = () => {
         if(this.state.blocks !== []){
             return this.state.blocks.map(block => {
@@ -139,6 +184,16 @@ class CourseEdit extends React.Component {
                         return(
                             <p key={block.order}>{block.text}</p>
                         );
+                    case 'image': {
+                        let imgUrl = '';
+                        if(this.state.images.filter(img => { return img.order === block.order })[0]){
+                            const image = this.state.images.filter(img => { return img.order === block.order })[0];
+                            imgUrl = image.imgUrl;
+                        }
+                        return(
+                            <img alt="an image" key={block.order} src={imgUrl}></img>
+                        );
+                    }        
                     default:
                         return <div key={block.order}>Isn't a block</div>;
                 }

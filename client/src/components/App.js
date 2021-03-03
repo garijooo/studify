@@ -3,7 +3,7 @@ import { Switch, Router, Route, Redirect } from 'react-router-dom';
 
 // subcomponents
 import Header from './extra/Header';
-import Helper from './extra/Helper';
+import Test from './Test';
 import Help from './extra/Help';
 
 // auth system components
@@ -36,6 +36,8 @@ class App extends React.Component{
                     <Route path="/profile" component={Header} />
                     <Route path="/courses" component={Header} />
                     <Switch>
+                        <Route exact path="/test/upload" component={Test} />
+
                         <Route exact path="/help" component={Help} />
 
                         <Redirect exact from='/' to="/courses" />   
