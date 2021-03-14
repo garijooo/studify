@@ -73,9 +73,9 @@ exports.updateCourse = async (req, res, next) => {
     }
 }
 exports.fetchCourse = async (req, res, next) => {
-    const _id = req.params.id;
+    const { id } = req.params;
     try{
-        const course = await Course.findById(_id);
+        const course = await Course.findById(id);
         res.status(200).json({
             success: true, 
             course

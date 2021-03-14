@@ -2,6 +2,10 @@
 /*
 Container styles
 */
+.none {
+    display: none;
+}
+
 .container {
     display: flex;
     justify-content: center;
@@ -10,6 +14,72 @@ Container styles
 .container__page {
     width: 80vw;
     background:#fff;
+}
+
+input[type=file] {
+    display: none;
+}
+
+
+
+
+
+/*
+Edit Courses styles
+*/
+.course__show__block {
+    width: 100%;
+    display: flex;
+    padding: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+.course__show__block-content {
+    width: 60%;
+}
+.course__show__block-edit {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.course__show__block-delete {
+    width: 20%;
+}
+.course__show__block-delete button, .course__show__block-edit button {
+    background: #fff;
+    color: #494347;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+}
+.course__show__block-delete button:hover, .course__show__block-edit button:hover {
+    color: #726a6f;
+}
+.course__show__block-content.primary {
+    width: 100%;
+}
+.course__edit__block-file input[type=file] {
+    display: none;
+}
+.file-btn{
+    color: #42b983;
+    position: relative;
+    border-radius: 99px;
+    border: 1px solid #42b983;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 0.5rem 1.5rem;
+    font-weight: 700;
+    outline: none;
+    background: #fff;
+    transition: all .22s;
+    cursor: pointer;
+    margin-right: 1rem;
+}
+.primary {
+    background: #42b983;
+    color: #fff;
 }
 /*
 Profile Courses styles

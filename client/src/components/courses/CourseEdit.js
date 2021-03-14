@@ -7,7 +7,7 @@ import history from '../../history';
 
 class CourseEdit extends React.Component {
     //state = { inputType: 'text', currentCourse: [] };
-    state = { blocks: [], currentType: 'title', text: '', file: null, url: '', images: [] };
+    state = { blocks: [], currentType: 'title', text: '', file: null, url: '', images: [], videos: [], animations: [] };
     componentDidMount() {
         this.updateState();
     }
@@ -30,14 +30,49 @@ class CourseEdit extends React.Component {
             console.log(err);
         }
     }
+    updateVideos = async block => {
+        try {
+            const res = await axios({
+                method: 'get',
+                url: `/static/public/${this.props.match.params.id}/${block.url}`,
+                responseType: 'blob'
+            });
+            let videoUrl = (window.URL ? window.URL : window.webkitURL).createObjectURL(res.data);
+            this.setState({ videos: [ ...this.state.videos, 
+                    { order: block.order, vidUrl: videoUrl } 
+                ] });   
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    updateAnimations = async block => {
+        try {
+            const res = await axios({
+                method: 'get',
+                url: `/static/public/${this.props.match.params.id}/${block.url}`,
+                responseType: 'blob'
+            });
+            let animationUrl = (window.URL ? window.URL : window.webkitURL).createObjectURL(res.data);
+            this.setState({ videos: [ ...this.state.videos, 
+                    { order: block.order, animUrl: animationUrl } 
+                ] });   
+        } catch (err) {
+            console.log(err);
+        }
+    }
     updateState = async () => {
         try {
             await this.props.fetchCourse(this.props.match.params.id);
             this.setState({ blocks: [ ...this.props.currentCourse.blocks]});
             this.state.blocks.filter(block => block.type === 'image').map(block => {
-                console.log('entered!');
                 this.updateImages(block);
-            });                 
+            });     
+            this.state.blocks.filter(block => block.type === 'video').map(block => {
+                this.updateVideos(block);
+            });    
+            this.state.blocks.filter(block => block.type === 'animation').map(block => {
+                this.updateAnimations(block);
+            });                
         } catch (err) {
             console.log(err);
         }
@@ -52,7 +87,7 @@ class CourseEdit extends React.Component {
         }
         this.props.updateCourse(this.props.match.params.id, updatedCourse);
         alert('Course has been updated');
-        history.push('/profile/courses');
+        history.push(`/courses/edit/${this.props.match.params.id}`);
     }
 
     onFileUpload = async (e) => {
@@ -94,7 +129,6 @@ class CourseEdit extends React.Component {
         }
         this.setState({ blocks: [ ...this.state.blocks, block ], text: '' });
     }
-    
     renderBlockAddingMenu() {
         switch(this.state.currentType) {
             case 'title':
@@ -171,7 +205,28 @@ class CourseEdit extends React.Component {
         );
         
     }
-
+    displayVideo = block => {
+        let vidUrl = '';
+        if(this.state.videos.filter(img => { return img.order === block.order })[0]){
+            const video = this.state.videos.filter(vid => { return vid.order === block.order })[0];
+            vidUrl = video.vidUrl;
+        }
+        return(
+            <video width="600" height="300" src={vidUrl}></video>
+        );
+        
+    }
+    displayAnimation = block => {
+        let animUrl = '';
+        if(this.state.animations.filter(anim => { return anim.order === block.order })[0]){
+            const animation = this.state.animations.filter(anim => { return anim.order === block.order })[0];
+            animUrl = animation.animUrl;
+        }
+        return(
+            <img alt="an animation" key={block.order} src={animUrl}></img>
+        );
+        
+    }
     renderBlocks = () => {
         if(this.state.blocks !== []){
             return this.state.blocks.map(block => {
@@ -193,7 +248,29 @@ class CourseEdit extends React.Component {
                         return(
                             <img alt="an image" key={block.order} src={imgUrl}></img>
                         );
-                    }        
+                    } 
+                    case 'animation': {
+                        let animUrl = '';
+                        if(this.state.animations.filter(anim => { return anim.order === block.order })[0]){
+                            const animation = this.state.animations.filter(anim => { return anim.order === block.order })[0];
+                            animUrl = animation.animUrl;
+                        }
+                        return(
+                            <img alt="an animation" key={block.order} src={animUrl}></img>
+                        );
+                        
+                    }    
+                    case 'video': {
+                        let vidUrl = '';
+                        if(this.state.videos.filter(img => { return img.order === block.order })[0]){
+                            const video = this.state.videos.filter(vid => { return vid.order === block.order })[0];
+                            vidUrl = video.vidUrl;
+                        }
+                        return(
+                            <video width="600" height="300" src={vidUrl}></video>
+                        );
+                        
+                    }   
                     default:
                         return <div key={block.order}>Isn't a block</div>;
                 }
@@ -202,6 +279,24 @@ class CourseEdit extends React.Component {
         else return <div>No blocks yet!</div>;
     }
 
+    filePreRender(){
+        
+    }
+    renderFileUploadBlock(type, accept = []) {
+        return(<div>
+            {type}
+            <form onSubmit={this.onFileUpload}>
+                <input
+                    name="asset"
+                    type="file"
+                    onChange={e => this.setState({ file: e.target.files[0] })}
+                    accept={accept.join(',')}
+                />
+               <input type="submit" /> 
+            </form>
+        </div>);
+    }
+    
     render() {
         return (
             <div className="container">

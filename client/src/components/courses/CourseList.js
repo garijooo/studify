@@ -14,7 +14,7 @@ class CourseList extends React.Component {
     renderTeachersButtons(id) {
         return(
             <React.Fragment>
-                <Link className="" to={`/courses/edit/${id}`}>
+                <Link className="" to={`/courses/change/${id}`}>
                     <EditIcon className="edit-icon" fontSize="large">                        
                     </EditIcon>
                 </Link>
