@@ -1,15 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchCourse, updateCourse } from '../../actions';
+
 //icons:
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+
+// firebase instance & config
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/database';
+import 'firebase/storage';
+import { firebaseConfig } from '../../firebase/config';
+
 
 import history from '../../history';
 class CourseChange extends React.Component {
     // initial state:
-    state = { blocks: [], currentType: 'video', text: '', files: [], file: null, visibility: '' };
+    state = { blocks: [], currentType: 'video', text: '', files: [], file: null, fileName: '', visibility: '' };
     // initial methods to get info about current course:
     componentDidMount() {
         if(!this.props.usersId) return history.push('/');
@@ -39,7 +49,6 @@ class CourseChange extends React.Component {
         this.setState({ blocks: this.state.blocks.filter((block, id) => id !== index) });
     }
 
- 
     changeOrderHandler = (index, flow) => {
         if(flow === 'down'){
             let updatedBlocks = [ ...this.state.blocks ];
@@ -65,51 +74,33 @@ class CourseChange extends React.Component {
         }
         this.setState({ blocks: [ ...this.state.blocks, block ], text: '' });
     }
-
-    // !!!!!!!!!!!!!!!!! !!!!!!!!!!!!!!!!! !!!!!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!
-    /*  
-    fileChangeHandler = async e => {
-        e.preventDefault();
-        await this.setState({ files: [ ...this.state.files,  e.target.files[0]] });
-        const block = {
-            type: this.state.currentType,
-            order: this.state.files.length
-        }
-        this.setState({ blocks: [ ...this.state.blocks, block ] });
-        console.log(this.state.blocks);
-        console.log(this.state.files);
-    }*/
-    /*
-    bindFileBlockWithArray = async () => {
-        const block = {
-            type: this.state.currentType,
-            order: this.state.files.length - 1
-        }
-        await this.setState({ blocks: [ ...this.state.blocks, block ] });
+    
+    // handling methods related to the files:
+    firebaseFileUpload = async () => {
+        firebase.initializeApp(firebaseConfig);
+        const storage = firebase.storage();
+        const ref = storage.ref(`${this.state.currentType}/${this.state.fileName}`)
+        const task = ref.put(this.state.file);
+        
+        await task.on('state_changed', snapshot => {
+            let percentage = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0);
+            console.log(percentage);
+        }, error => {
+            console.log(error);
+        }, () => {
+          console.log('Complete!');  
+        });
     }
-    */
+
     fileChangeHandler = async e => {
         e.preventDefault();
         const file = e.target.files[0];
-
-
+        const fileName = `${Date.now()}-${file.name}`;
         const reader = new FileReader();
         reader.onload = (ev) => {
-            this.setState({ file: ev.target.result, visibility: 'none' });
-            //this.setState({ visibility: 'none' });
-            //await this.setState({ files: [ ...this.state.files, ev.target.result] });
-            //console.log(this.state.files[this.state.files.length-1]);
-            /*
-            console.log(this.state.files.length - 1);
-            const block = {
-                type: this.state.currentType,
-                order: this.state.files.length - 1
-            }
-            this.setState({ blocks: [ ...this.state.blocks, block ] });
-            */
-        }
+            this.setState({ file: ev.target.result, fileName, visibility: 'none' });
+        };
         await reader.readAsDataURL(file);
-        //this.bindFileBlockWithArray();
     }
     
     triggerHandler = e => {
@@ -122,22 +113,22 @@ class CourseChange extends React.Component {
         if(index === 0) 
             return (
                 <button onClick={() => this.changeOrderHandler(index, 'down')}>
-                    <ArrowDownwardIcon fontSize="large"></ArrowDownwardIcon>
+                    <ExpandMoreIcon fontSize="large"></ExpandMoreIcon>
                 </button> 
             );
         if(index === this.state.blocks.length - 1) 
             return (
                 <button onClick={() => this.changeOrderHandler(index, 'up')}>
-                    <ArrowUpwardIcon fontSize="large"></ArrowUpwardIcon>  
+                    <ExpandLessIcon fontSize="large"></ExpandLessIcon>  
                 </button>
             );
         return(
             <React.Fragment>
                 <button onClick={() => this.changeOrderHandler(index, 'up')}>
-                    <ArrowUpwardIcon fontSize="large"></ArrowUpwardIcon>  
+                    <ExpandLessIcon fontSize="large"></ExpandLessIcon>  
                 </button>
                 <button onClick={() => this.changeOrderHandler(index, 'down')}>
-                    <ArrowDownwardIcon fontSize="large"></ArrowDownwardIcon>
+                    <ExpandMoreIcon fontSize="large"></ExpandMoreIcon>
                 </button>
             </React.Fragment>
         );
@@ -193,14 +184,13 @@ class CourseChange extends React.Component {
 
     previewRender(){
         if(!this.state.file) return;
-        console.log(this.state.currentType);
         const rend = type => {
             switch(type) {
             case 'image':
                 return <img width="600" height="300" src={this.state.file} />;
             case 'video':
                 return (
-                    <video width="600" height="300" autoplay="autoplay" controls>
+                    <video width="600" height="300" controls>
                         <source src={this.state.file} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
@@ -211,13 +201,11 @@ class CourseChange extends React.Component {
                 return;  
             }
         }
-        
-        //const preview = rend(this.state.currentType);
         return(
            <React.Fragment>
                {rend(this.state.currentType)}
-               <button onClick={e => console.log('accept')}>Accept</button>
-               <button onClick={() => this.setState({ file: null, visibility: '' })}>Decline</button>
+               <button className="primary" onClick={this.firebaseFileUpload}>Accept</button>
+               <button className="primary" onClick={() => this.setState({ file: null, visibility: '' })}>Decline</button>
            </React.Fragment>
         );
     }
