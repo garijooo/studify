@@ -12,17 +12,11 @@ exports.createCourse = async (req, res, next) => {
             heading, teachersId, description
         });
         try {
-            const rootPath = path.join(__dirname, '../');
-            await fs.promises.mkdir(`${rootPath}public\\${course._id}`);
-            try {
-                storage.setState({"collectionChangeDate": new Date()});
-                res.status(201).json({
-                    success: true, 
-                    course
-                });
-            } catch(e) {
-                next(e);
-            }
+            storage.setState({"collectionChangeDate": new Date()});
+            res.status(201).json({
+                success: true, 
+                course
+            });
         } catch(e){
             next(e);
         }
@@ -35,16 +29,10 @@ exports.deleteCourse = async (req, res, next) => {
     try {   
         await Course.deleteOne({ _id });
         try {
-            const rootPath = path.join(__dirname, '../');
-            await fs.promises.rmdir(`${rootPath}public\\${_id}`);
-            try {
-                storage.setState({"collectionChangeDate": new Date()});
-                res.status(200).json({
-                    success: true
-                });
-            } catch (err) {
-                next(err);
-            }
+            storage.setState({"collectionChangeDate": new Date()});
+            res.status(200).json({
+                success: true
+            });
         } catch(e) {
             next(e);
         } 

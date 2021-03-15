@@ -9,22 +9,32 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 // firebase instance & config
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-import 'firebase/database';
-import 'firebase/storage';
-import { firebaseConfig } from '../../firebase/config';
+import firebase from '../../firebase/firebaseClient';
+// import firebase from 'firebase/app';
+// import 'firebase/firestore';
+// import 'firebase/database';
+// import 'firebase/storage';
+// import { firebaseConfig } from '../../firebase/config';
 
 
 import history from '../../history';
 class CourseChange extends React.Component {
     // initial state:
-    state = { blocks: [], currentType: 'video', text: '', files: [], file: null, fileName: '', visibility: '' };
+    state = { 
+        blocks: [], 
+        currentType: 'video', 
+        text: '', files: [],
+        file: null, 
+        fileToUpload: null,
+        fileName: '', 
+        visibility: '' 
+    };
     // initial methods to get info about current course:
     componentDidMount() {
         if(!this.props.usersId) return history.push('/');
         const { id } = this.props.match.params;
         this.updateInitialState(id);
+        
     }
     updateInitialState = async id => {
         try{
@@ -35,6 +45,11 @@ class CourseChange extends React.Component {
             console.log(error);
         } 
     }
+    // additional methods
+    uploadFile = e => {
+
+    }
+
     // handling methods:
     courseSaveHandler = e => {
         e.preventDefault();
@@ -77,18 +92,37 @@ class CourseChange extends React.Component {
     
     // handling methods related to the files:
     firebaseFileUpload = async () => {
-        firebase.initializeApp(firebaseConfig);
+        //firebase.initializeApp(firebaseConfig);
         const storage = firebase.storage();
-        const ref = storage.ref(`${this.state.currentType}/${this.state.fileName}`)
-        const task = ref.put(this.state.file);
+
+        const path = `${this.state.currentType}/${this.state.fileName}`;
+
+        const ref = storage.ref(path);
+
+        console.log(this.state.fileToUpload);
+
+        const task = ref.put(this.state.fileToUpload);
         
-        await task.on('state_changed', snapshot => {
-            let percentage = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0);
-            console.log(percentage);
+        await task.on(firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
+            let percent = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+            console.log(percent + "% done");
         }, error => {
             console.log(error);
-        }, () => {
-          console.log('Complete!');  
+        }, async () => {
+            task.snapshot.
+            task.snapshot.ref.getDownloadURL().then(url => {
+                //console.log(url);
+                //console.log(123);
+                const block = {
+                    type: this.state.currentType,
+                    url
+                }
+                this.setState({ blocks: [ ...this.state.blocks, block ], file: null, visibility: '' });
+                const updatedCourse = {
+                    blocks: this.state.blocks
+                }
+                this.props.updateCourse(this.props.course._id, updatedCourse);
+            });
         });
     }
 
@@ -98,12 +132,13 @@ class CourseChange extends React.Component {
         const fileName = `${Date.now()}-${file.name}`;
         const reader = new FileReader();
         reader.onload = (ev) => {
-            this.setState({ file: ev.target.result, fileName, visibility: 'none' });
+            this.setState({ file: ev.target.result, fileToUpload: file, fileName, visibility: 'none' });
         };
         await reader.readAsDataURL(file);
+        
     }
     
-    triggerHandler = e => {
+    triggerHandler = e => { 
         e.preventDefault();
         document.querySelector('input[type="file"]').click();
     }
@@ -173,7 +208,7 @@ class CourseChange extends React.Component {
                     default:
                         return (
                             <div key={index}>
-                                {this.renderFileBlock(block.type, block.order)}
+                                {this.renderFileBlock(block)}
                             </div>
                         );
                 }
@@ -211,37 +246,27 @@ class CourseChange extends React.Component {
     }
 
 
-    renderFileBlock =  (type, index) => {
-        /*
-        console.log(index);
-        switch(type) {
+    renderFileBlock =  (block) => {
+        const xhr = new XMLHttpRequest();
+        xhr.responseType = 'blob';
+        xhr.onload = (event) => {
+            const blob = xhr.response;
+        };
+        xhr.open('GET', block.url);
+        xhr.send();
+
+        //const img = document.getElementById('myimg');
+        //img.setAttribute('src', url);
+        switch(block.type) {
             case 'image':
-                return <img src={this.state.files[index]} />;
+                return <img width="600" height="300"  src={block.url} />;
             case 'video':
-                return <video width="600" height="300" src={this.state.files[index]}></video>
+                return <video width="600" height="300" controls src={block.url}></video>
             case 'animation':
-                return <img src={this.state.files[index]} />;
-               
+                return <img width="600" height="300"  src={block.url} />;
+            default:
+                return;
         }
-        */
-        /*
-        if(!this.state.files[index]) return;
-        console.log(index);
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            switch(type) {
-                case 'image':
-                    return <img src={e.target.result} />;
-                case 'video':
-                    return <video width="600" height="300" src={e.target.result}></video>
-                case 'animation':
-                    return <img src={e.target.result} />;
-            }
-        }
-        const file = await this.state.files[index];
-        console.log(file);
-        await reader.readAsDataURL(this.state.files[index]); 
-        */
     }
 
     renderAddFileBlock(accept = []) {
