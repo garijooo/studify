@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { signOut, signIn } from '../../actions/index';
 
-import logo from '../../images/logo.png';
-import '../../styles/header.css';
+import logo from '../../static/logo.png';
 
 class Header extends React.Component {
 
@@ -39,44 +38,45 @@ class Header extends React.Component {
         //history.push('/auth/signin');
     }
 
-    rendAuth() {
+    renderAuthLinksList() {
         return(
-            <React.Fragment>
-                <li><Link to="/courses" >Courses</Link></li>
-                <li><Link to="/profile/courses" >My Courses</Link></li>
-                <li><Link to="/profile/results" >My Results</Link></li>
-                <li><Link to={`/profile/${this.props.username}`} >Profile</Link></li>
-            </React.Fragment>
+            <>
+                <li className="header__list_item"><Link to="/courses" >Courses</Link></li>
+                <li className="header__list_item"><Link to="/profile/courses" >My Courses</Link></li>
+                <li className="header__list_item"><Link to="/profile/results" >My Results</Link></li>
+                <li className="header__list_item"><Link to={`/profile/${this.props.username}`} >Profile</Link></li>
+            </>
         );
     }
-    rendNonAuth() {
+    renderNonAuthLinksList() {
         return(
-            <React.Fragment>
-                <li><Link to="/courses" >Courses</Link></li>
-                <li><Link to="/help" >Help</Link></li>
-            </React.Fragment>
+            <>
+                <li className="header__list_item"><Link to="/courses" >Courses</Link></li>
+                <li className="header__list_item"><Link to="/help" >Help</Link></li>
+            </>
         );
+    }
+    renderLink() {
+        if(localStorage.getItem("authtoken"))
+            return <a onClick={this.signOutHandler} className="header__link"> Sign Out</a>;
+        return <Link to="/auth/signin" className="header__link">Sign In</Link>;  
     }
 
     render() {
         return (
-            <header className="header">
-                <Link to="/courses" >
-                    <img src={logo} alt="logo" />
-                </Link>
-                
-                <nav className="header__nav">
-                    <ul>
-                    {localStorage.getItem("authtoken") ? this.rendAuth() : this.rendNonAuth()}
-                    </ul>
-                </nav>
-                {localStorage.getItem("authtoken") ? (
-                  <a onClick={this.signOutHandler} className="header__auth-link">Sign Out</a> 
-                )
-                : 
-                <Link to="/auth/signin" className="header__auth-link">Sign In</Link>
-                }
-            </header>
+            <>
+                <header className="header">
+                    <nav className="header__nav">
+                        <Link to="/courses" className="header__link">
+                            <img className="header__link_logo" alt="logo" src={logo} />
+                        </Link>
+                        <ul className="header__list">
+                        {localStorage.getItem("authtoken") ? this.renderAuthLinksList() : this.renderNonAuthLinksList()}
+                        </ul>
+                        {this.renderLink()}
+                    </nav>
+                </header>
+            </>     
         )
     }
 };

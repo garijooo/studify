@@ -2,10 +2,12 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+import Auth from './Auth';
+
 import history from '../../history';
 //styles
 import '../../styles/auth-screen.css';
-import logo from '../../images/logo.png';
+import logo from '../../static/logo-green.png';
 
 class SingUp extends React.Component {
     state = { 
@@ -13,16 +15,15 @@ class SingUp extends React.Component {
         email: null, 
         password: null, 
         confirmPassword: null, 
-        role: null,
+        role: 'student',
         error: null 
     };
     componentDidMount() {
         localStorage.getItem("authtoken") && history.push('/courses');
     }
 
-    signUpHandler = async (e) => {
+    signUpHandler = async e => {
         e.preventDefault();
- 
         const config = {
             headers: {
                 "Content-Type": "application/json"
@@ -52,104 +53,79 @@ class SingUp extends React.Component {
         }
 
     }
+    ////////////////////// confirmPassword
+
+    renderForm(){
+        return(
+            <>
+                <label htmlFor="username">Username:</label>
+                <input type="text" required placeholder="Enter username" name="username"
+                    id="username" onChange={e => this.setState({ username: e.target.value })}
+                    className="form__input-text" autocomplete="off"
+                />
+                <label htmlFor="email">Email:</label>
+                <input type="email" required placeholder="Enter email" name="email"
+                    id="email" onChange={e => this.setState({ email: e.target.value })}
+                    className="form__input-text" autocomplete="off"
+                />
+                <label htmlFor="password">Password:</label>
+                <input type="password" required placeholder="Enter password" name="password"
+                    id="password" onChange={e => this.setState({ password: e.target.value })}
+                    className="form__input-text" autocomplete="off"
+                />
+                <label htmlFor="confirmPassword">Confirm:</label>
+                <input type="password" required placeholder="Confirm password" name="confirmPassword"
+                    id="confirmPassword" onChange={e => this.setState({ confirmPassword: e.target.value })}
+                    className="form__input-text" autocomplete="off" 
+                />
+                <div className="form__radio">
+                    <label htmlFor="student">Student</label>
+                    <input type="radio" required value="student" name="role" checked
+                        id="student" onChange={e => this.setState({ role: e.target.value })}
+                    />
+                    <label htmlFor="teacher">Teacher</label>
+                    <input type="radio" required value="teacher" name="role"
+                        id="teacher" onChange={e => this.setState({ role: e.target.value })}
+                    /> 
+                </div> 
+                <div className="form__input-btn btn">
+                    <input  type="submit" value="SIGN UP" className="btn__submit wide"
+                        onClick={e => this.signUpHandler(e)}
+                    />
+                </div>
+                <div className="form__feedback">
+                    <b className="error">{this.state.error && this.state.error}</b>    
+                </div> 
+            </>
+        );
+    }
+    renderSubElements(){
+        return(
+            <>
+                <p className="form__subtext">
+                    Already have an account? 
+                    <Link to="/auth/signin">Sign in</Link>
+                </p> 
+            </>
+        );
+    } 
+
+    //////////////
 
     render() {
         return (
-            <div className="auth-screen">
-                <Link to="/courses" >
-                    <img src={logo} alt="logo" className="auth-screen__logo" />
-                </Link>
-                
-                <form className="auth-screen__form" 
-                    onSubmit={this.signUpHandler}
-                >
-                    <h3 className="auth-screen__title">Sign up</h3>
-                    <div className="auth-screen__form__element">
-                        <label htmlFor="username">Username:</label>
-                        <input 
-                            type="text" 
-                            required placeholder="Enter username" 
-                            name="username"
-                            id="username"
-
-                            onChange={e => this.setState({ username: e.target.value })}
-                        />
-                    </div>
-                    <div className="auth-screen__form__element">
-                        <label htmlFor="email">Email:</label>
-                        <input 
-                            type="email" 
-                            required placeholder="Enter email" 
-                            name="email"
-                            id="email"
-
-                            onChange={e => this.setState({ email: e.target.value })}
-                        />
-                    </div>  
-                    <div className="auth-screen__form__element">
-                        <label htmlFor="password">Password:</label>
-                        <input 
-                            type="password" 
-                            required placeholder="Enter password" 
-                            name="password"
-                            id="password"
-
-                            onChange={e => this.setState({ password: e.target.value })}
-                        />
-                    </div>     
-                    <div className="auth-screen__form__element">
-                        <label htmlFor="confirmPassword">Confirm password:</label>
-                        <input 
-                            type="password" 
-                            required placeholder="Confirm password" 
-                            name="confirmPassword"
-                            id="confirmPassword"
-
-                            onChange={e => this.setState({ confirmPassword: e.target.value })}
-                        />
-                    </div>      
-                    <div className="auth-screen__form__element">
-                        <label htmlFor="">Role:</label>
-                        <div>
-                            <label htmlFor="">Student</label>
-                            <input 
-                                type="radio" 
-                                required 
-                                value="student" 
-                                name="role"
-                                id="student"
-                                required
-                                onChange={e => this.setState({ role: e.target.value })}
-                            />
-                            <label htmlFor="">Teacher</label>
-                            <input 
-                                type="radio" 
-                                required 
-                                value="teacher" 
-                                name="role"
-                                id="teacher"
-                                onChange={e => this.setState({ role: e.target.value })}
-                            /> 
-                        </div> 
-                    </div>  
-                    <div className="auth-screen__form__element">
-                        <input 
-                            type="submit" 
-                            name="submit"
-                            value="Sign up"
-                            onClick={this.signUpHandler}
-                        />
-                        <div className="auth-screen__form__error">
-                            {this.state.error && `${this.state.error}` }
-                        </div>
-                    </div>
-                    <span className="auth-screen__subtext">
-                        Already have an account? 
-                        <Link to="/auth/signin">Sign in</Link>
-                    </span>                
-                </form>
-            </div>
-        )
+            <main className="absolute">
+            <Link to="/courses" >
+                <img src={logo} alt="logo" />
+            </Link>
+            <Auth 
+                title="SIGN OUT" 
+                renderForm={this.renderForm()} 
+                renderSubElements={this.renderSubElements()} 
+                onSubmit={this.signInHandler}
+            />
+        </main>
+        );
     }
 }
 

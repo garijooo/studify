@@ -9,34 +9,37 @@
 html {
     font-size: 16px;
 }
-.header {
+/*
+!!! УБРАТЬ _1
+*/
+.header_1 {
     display: flex;
     justify-content: space-between;
     background: #222629;
     align-items: center;
     padding: 10px 10%;
 }
-.header a img {
+.header_1 a img {
     max-width: 7vw;
     max-height: 7vw;
     cursor: pointer;
 }   
-.header__nav ul {
+.header_1__nav ul {
     list-style: none;
 }
-.header__nav ul li {
+.header_1__nav ul li {
     display: inline-block;
     padding: 0 20px;
 }
-.header__nav ul li a {
+.header_1__nav ul li a {
     font-size: .9rem;
     transition: all 0.3s ease 0s;
 }
-.header__nav ul li a:hover {
+.header_1__nav ul li a:hover {
     color:#000;
 }
 
-.header li, a, button {
+.header_1 li, a, button {
     font-weight: 500;
     font-family: "Montserrat", sans-serif;
     font-size: .9rem;
@@ -46,7 +49,7 @@ html {
 }
 
 
-.header__auth-link {
+.header_1__auth-link {
     background-color:#000;
     color: #fff;
     transition: all 0.3s ease 0s;
@@ -55,13 +58,13 @@ html {
     border-radius: 16px;
 }
 
-.header__auth-link:hover {
+.header_1__auth-link:hover {
     background-color: #fff;
     color: #000;
 }
 
 @media only screen and (max-width: 500px) {
-    .header {
+    .header_1 {
         display: flex;
         justify-content: space-between;
         background: #222629;
@@ -69,23 +72,23 @@ html {
         padding: 5px 5px;
     }
 
-    .header__nav ul li {
+    .header_1__nav ul li {
         padding: 0 5px;
     }
 
-    .header__nav ul li a {
+    .header_1__nav ul li a {
         font-size: .7rem;
     }
 
-    .header li, a, button {
+    .header_1 li, a, button {
         font-size: .7rem;
     }
-    .header__auth-link {
+    .header_1__auth-link {
         padding: 5px 10px;
     }
 }
 @media only screen and (max-width: 300px) {
-    .header {
+    .header_1 {
         display: flex;
         justify-content: space-between;
         background: #222629;
@@ -93,18 +96,18 @@ html {
         padding: 5px 5px;
     }
 
-    .header__nav ul li {
+    .header_1__nav ul li {
         padding: 0 5px;
     }
 
-    .header__nav ul li a {
+    .header_1__nav ul li a {
         font-size: .5rem;
     }
 
-    .header li, a, button {
+    .header_1 li, a, button {
         font-size: .5rem;
     }
-    .header__auth-link {
+    .header_1__auth-link {
         padding: 5px 10px;
     }
 }

@@ -1,6 +1,9 @@
 import React from 'react';
 import { Switch, Router, Route, Redirect } from 'react-router-dom';
 
+import Test from './Test';
+import TestAuth from './TestAuth';
+
 // subcomponents
 import Header from './extra/Header';
 import Help from './extra/Help';
@@ -27,25 +30,29 @@ import ProfileSettings from './profiles/ProfileSettings';
 import ProfileCourses from './profiles/ProfileCourses';
 
 import history from '../history';
+//styles
+import '../styles/style.scss';
 
 class App extends React.Component{
-    
-
     render() {
         return (
             <Router history={history}>
-                <div className="app">
+                <>
                     <Route path="/profile" component={Header} />
                     <Route path="/courses" component={Header} />
                     <Switch>
                         <Route exact path="/help" component={Help} />
 
-                        <Redirect exact from='/' to="/courses" />   
+ 
+
+                        <Route exact path="/test" component={Test} />
+                        <Route exact path="/testauth" component={TestAuth} />
+
                         <Route exact path="/profile/settings" component={ProfileSettings} />
                         <Route exact path="/profile/courses" component={ProfileCourses} />
                         <Route exact path="/profile/:username" component={Profile} />
 
-                        
+                         
                         <Route exact path="/courses" component={Courses} />
                         <Route exact path="/courses/:id" component={CourseShow} />
                         <Route exact path="/courses/new/:heading" component={CourseCreate} />
@@ -58,8 +65,10 @@ class App extends React.Component{
                         <Route exact path="/auth/signup" component={SignUp} />
                         <Route exact path="/auth/forgotpass" component={ForgotPass} />
                         <Route exact path="/auth/resetpass/:resetToken" component={ResetPass} />
+
+                        <Redirect from='/' to="/courses" />   
                     </Switch>
-                </div>
+                </>
             </Router>
         );
     }

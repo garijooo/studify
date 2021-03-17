@@ -1,5 +1,10 @@
-import axios from 'axios';
 import React from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import Auth from './Auth';
+
+import logo from '../../static/logo-green.png'; 
+
 import history from '../../history';
 
 class ForgotPass extends React.Component {
@@ -19,46 +24,48 @@ class ForgotPass extends React.Component {
                 config
             );
             this.setState({ success: data.data, error: null });
-            //history.push('/');
         } catch(error) {
             this.setState({ error: error.response.data.error, email: null, success: null });
         }
 
     }
-
-    render() {
-        return (
-        <div className="auth-screen">
-            <form className="auth-screen__form" 
-                onSubmit={e => this.forgotPassHandler(e)}
-            >
-                <h3 className="auth-screen__title">Forgot password</h3>
-                <div className="auth-screen__form__element">
-                    <label htmlFor="email">Email:</label>
-                    <input 
-                        type="email" 
-                        required placeholder="Enter email" 
-                        name="email"
-                        id="email"
-
-                        onChange={e => this.setState({ email: e.target.value })}
-                    />
-                </div>  
-                <div className="auth-screen__form__element">
-                    <input 
-                        type="submit" 
-                        name="submit"
-                        value="Send an email"
+    renderForm() {
+        return(
+            <>
+                <label htmlFor="email">Email:</label>
+                <input type="email" required placeholder="Enter email" name="email"
+                    id="email" onChange={e => this.setState({ email: e.target.value })}
+                    className="form__input-text" autocomplete="off"
+                />
+                <div className="form__input-btn btn">
+                    <input  type="submit" value="SEND AN EMAIL" className="btn__submit wide"
                         onClick={e => this.forgotPassHandler(e)}
                     />
-                    <div className="auth-screen__form__error">
-                        {this.state.error && `Error: ${this.state.error}` }
-                        {this.state.success && `Success: ${this.state.success}` }
-                    </div>
-                </div>             
-            </form>
-        </div>
-        )
+                </div>
+                <div className="form__feedback">
+                    <b className="error">{this.state.error && this.state.error}</b>   
+                    <b className="success">{this.state.success && this.state.success}</b>   
+                </div> 
+            </>
+        );
+    }
+    renderSubElements() {
+        return;
+    }
+    render() {
+        return (
+            <main className="absolute">
+                <Link to="/courses" >
+                    <img src={logo} alt="logo" />
+                </Link>
+                <Auth 
+                    title="FORGOT PASSWORD" 
+                    renderForm={this.renderForm()} 
+                    renderSubElements={this.renderSubElements()} 
+                    onSubmit={this.forgotPassHandler}
+                />
+            </main>
+        );
     }
 }
 

@@ -3,8 +3,6 @@ import CourseList from './CourseList';
 import { connect } from 'react-redux';
 import { updateLastChange, fetchCourses } from '../../actions';
 import axios from 'axios';
-//styles
-import '../../styles/main-screen.css';
 
 class Courses extends React.Component {
     componentDidMount() {
@@ -30,11 +28,14 @@ class Courses extends React.Component {
 
     render() {
         return (
-            <div className="container">
-                <div className="container__page">
-                    <CourseList courses={this.props.courses} />
+            <>
+            <main>
+                <div className="main-heading">
+                    <h1>Available courses</h1>
                 </div>
-            </div>
+                <CourseList courses={this.props.courses} editable={null}/>
+            </main>
+            </>
         )
     }
 }

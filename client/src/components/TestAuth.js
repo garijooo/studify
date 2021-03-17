@@ -1,17 +1,14 @@
 import React from 'react';
 import axios from 'axios';
+import Auth from '../components/auth/Auth';
 import { Link } from 'react-router-dom';
+import '../styles/style.scss'
+import logo from '../static/logo-green.png';
+import history from '../history';
 import { connect } from 'react-redux';
-import { signIn, signOut, updateLastChange, fetchTeachersCourses } from '../../actions'; 
+import { signIn, signOut, updateLastChange, fetchTeachersCourses } from '../actions'; 
 
-import Auth from './Auth';
-
-import history from '../../history';
-//styles
-import '../../styles/auth-screen.css';
-import logo from '../../static/logo-green.png';
-
-class SignIn extends React.Component {
+class TestAuth extends React.Component {
     state = { email: null, password: null, error: null };
 
     signInHandler = async e => {
@@ -56,8 +53,8 @@ class SignIn extends React.Component {
                         onClick={e => this.signInHandler(e)}
                     />
                 </div>
-                <div className="form__feedback">
-                    <b className="error">{this.state.error && this.state.error}</b>    
+                <div className="form__error">
+                    <b>{this.state.error && this.state.error}</b>    
                 </div> 
             </>
         );
@@ -77,7 +74,6 @@ class SignIn extends React.Component {
         );
     } 
 
-
     render() {
         return (
             <main className="absolute">
@@ -86,13 +82,13 @@ class SignIn extends React.Component {
                 </Link>
                 <Auth 
                     title="SIGN IN" 
-                    renderForm={this.renderForm()} 
+                    renderFrom={this.renderForm()} 
                     renderSubElements={this.renderSubElements()} 
                     onSubmit={this.signInHandler}
                 />
             </main>
-        );
+        )
     }
 }
 
-export default connect(null, { signIn, signOut, updateLastChange, fetchTeachersCourses } )(SignIn);
+export default connect(null, { signIn, signOut, updateLastChange, fetchTeachersCourses } )(TestAuth);
