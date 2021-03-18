@@ -58,7 +58,7 @@ class Course extends React.Component {
                     size: this.state.size,
                     localUrl: path
                 }
-                this.setState({ blocks: [ ...this.state.blocks, block ], currentFile: null, uploadFile: null, visibility: '' });
+                this.setState({ blocks: [ ...this.state.blocks, block ], currentFile: null, uploadFile: null, visibility: '', size: 'small'  });
                 const updatedCourse = {
                     blocks: this.state.blocks
                 }

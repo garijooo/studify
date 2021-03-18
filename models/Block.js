@@ -5,6 +5,7 @@ const BlockSchema = new mongoose.Schema({
     title: String,
     text: String,
     url: String,
+    size: String,
     localUrl: String
 });
 
