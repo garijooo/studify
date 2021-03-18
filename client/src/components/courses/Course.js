@@ -5,6 +5,11 @@ import { fetchCourse, updateCourse } from '../../actions';
 import history from '../../history';
 import firebase from '../../firebase/firebaseClient';
 
+//icons:
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+
 class Course extends React.Component {
     state = {  
         blocks: [], 
@@ -50,7 +55,8 @@ class Course extends React.Component {
                 const block = {
                     type: this.state.currentType,
                     url,
-                    size: this.state.size
+                    size: this.state.size,
+                    localUrl: path
                 }
                 this.setState({ blocks: [ ...this.state.blocks, block ], currentFile: null, uploadFile: null, visibility: '' });
                 const updatedCourse = {
@@ -60,6 +66,26 @@ class Course extends React.Component {
             });
         });
     }
+    removeBlockHandler = index => {
+        if(this.state.blocks[index].type !== 'title' && this.state.blocks[index].type !== 'text'){
+            const storage = firebase.storage();
+            const ref= storage.ref();
+            const fileRef = ref.child(this.state.blocks[index].localUrl);
+            fileRef.delete().then(() => {
+                const update = (this.state.blocks.filter((block, id) => id !== index));
+                this.setState({ blocks: update });
+                const updatedCourse = {
+                    blocks: update
+                }
+                this.props.updateCourse(this.props.id, updatedCourse);
+                history.push(`/courses/edit/${this.props.id}`);
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
+        
+    }
+
     addTextBlockHandler = e => {
         e.preventDefault();
         const block = {
@@ -93,42 +119,116 @@ class Course extends React.Component {
         alert('Course has been updated');
         history.push(`/courses/edit/${this.props.id}`);
     }
+    changeOrderHandler = (index, flow) => {
+        if(flow === 'down'){
+            let updatedBlocks = [ ...this.state.blocks ];
+            const elements = this.state.blocks.filter((block, id) => id === index || id === index + 1);
+            updatedBlocks[index] = elements[1];
+            updatedBlocks[index + 1] = elements[0];
+            this.setState({ blocks: updatedBlocks });
+        }
+        else {
+            let updatedBlocks = [ ...this.state.blocks ];
+            const elements = this.state.blocks.filter((block, id) => id === index - 1 || id === index);
+            updatedBlocks[index] = elements[0];
+            updatedBlocks[index - 1] = elements[1];
+            this.setState({ blocks: updatedBlocks });
+        }
+    } 
+
     // render methods
+    renderUpDownIcons(index){
+        if(index === 0) 
+            return (
+                <>
+                    <button onClick={() => this.removeBlockHandler(index)}>
+                        <HighlightOffIcon fontSize="large"></HighlightOffIcon>
+                    </button>    
+                    <button onClick={() => this.changeOrderHandler(index, 'down')}>
+                        <ExpandMoreIcon fontSize="large"></ExpandMoreIcon>
+                    </button> 
+                </>
+            );
+        if(index === this.state.blocks.length - 1) 
+            return (
+                <>
+                    <button onClick={() => this.removeBlockHandler(index)}>
+                        <HighlightOffIcon fontSize="large"></HighlightOffIcon>
+                    </button>   
+                    <button onClick={() => this.changeOrderHandler(index, 'up')}>
+                        <ExpandLessIcon fontSize="large"></ExpandLessIcon>  
+                    </button>
+                </>
+            );
+        return(
+            <>
+                <button onClick={() => this.removeBlockHandler(index)}>
+                    <HighlightOffIcon fontSize="large"></HighlightOffIcon>
+                </button>   
+                <button onClick={() => this.changeOrderHandler(index, 'up')}>
+                    <ExpandLessIcon fontSize="large"></ExpandLessIcon>  
+                </button>
+                <button onClick={() => this.changeOrderHandler(index, 'down')}>
+                    <ExpandMoreIcon fontSize="large"></ExpandMoreIcon>
+                </button>
+            </>
+        );
+    }
+
     renderBlocks() {
         if(this.state.blocks !== []){
             return this.state.blocks.map((block, index) => {
                 switch(block.type){
                     case 'title':
                         return(
-                            <div className="blocks__text" key={index}>
-                                <h3>{block.text}</h3>
-                            </div>
+                            <>
+                                <div className="blocks__text" key={index}>
+                                    <h3 className={`${this.props.editable ? this.props.editable : ''}`}>{block.text}</h3>
+                                    <div className={`blocks__text_order ${this.props.editable && this.props.editable}`}>
+                                        {this.props.editable && this.renderUpDownIcons(index)}
+                                    </div>
+                                </div>
+                            </> 
                         );
                     case 'text':
                         return(
-                            <div className="blocks__text" key={index}>
-                                <p>{block.text}</p>
-                            </div>
+                            <>
+                                <div className="blocks__text" key={index}>
+                                    <p className={`${this.props.editable ? this.props.editable : ''}`}>{block.text}</p>
+                                    <div className={`blocks__text_order ${this.props.editable && this.props.editable}`}>
+                                        {this.props.editable && this.renderUpDownIcons(index)}
+                                    </div>
+                                </div>
+                            </>
                         );
                     case 'image':
                         return(
-                            <div className={`blocks__image ${this.state.size}`} key={index}>
+                            <div className={`blocks__image ${block.size}`} key={index}>
                                 <img src={block.url} />
+                                <div className={`blocks__image_order ${this.props.editable && this.props.editable}`}>
+                                    {this.props.editable && this.renderUpDownIcons(index)}
+                                </div>
                             </div>
                         );
                     case 'video':
                         return(
-                            <div className={`blocks__video ${this.state.size}`} key={index}>
+                            <div className={`blocks__video ${block.size}`} key={index}>
                                 <video controls>
                                     <source src={block.url} type="video/mp4" />
                                     Your browser does not support the video tag.
                                 </video>
+                                <div className={`blocks__video_order ${this.props.editable && this.props.editable}`}>
+                                    {this.props.editable && this.renderUpDownIcons(index)}
+                                </div>
                             </div>
                         );
                     case 'animation':
                         return(
-                            <div className={`blocks__animation ${this.state.size}`} key={index}>
+                            <div className={`blocks__animation ${block.size}`} key={index}>
                                 <img src={block.url} />
+                                <div className={`blocks__animation_order ${this.props.editable && this.props.editable}`}>
+                                    {this.props.editable && this.renderUpDownIcons(index)}
+                                </div>
                             </div>
                         );
                     default:

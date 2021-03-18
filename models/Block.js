@@ -4,7 +4,8 @@ const BlockSchema = new mongoose.Schema({
     type: String,
     title: String,
     text: String,
-    url: String
+    url: String,
+    localUrl: String
 });
 
 const Block =  mongoose.model('Block', BlockSchema);

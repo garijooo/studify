@@ -443,26 +443,73 @@ main {
 .blocks { 
     color: $block_text_color;
     &__text{
+        position: relative;
+        display: flex;
         background: #f5f2d1;
         margin: ($basic_indent) 0; 
         p {
             font-size: ($header_font_size * 4 / 5);
+            &.editable {
+                width: 90%;
+            }
         }
         h3 {
             border-left: ($basic_indent * 2 / 5) solid $block_text_color;   
             font-size: ($header_font_size * 6 / 5);
+            &.editable {
+                width: 90%;
+            }
         }
         p, h3 {
             padding: $basic_indent / 2;
             padding-left: ($basic_indent * 2 / 5);
-
+        }
+        &_order {
+            position: absolute;
+            transition: all .5s linear;
+            top: 0;
+            right: 0;
+            button {
+                border: none;
+                outline: none;
+                background: #f5f2d1;
+                transition: all .5s linear;
+                margin-right: $basic_indent / 4;
+                :hover {
+                    background: #f0e67b;
+                }
+            }
         }
     }
+    // &__order {
+    //     display: none;
+    //     &.editable {
+    //         display: block;
+    //         width: 30%;
+    //     }
+    // }
     &__image, &__video, &__animation {
+        position: relative;
         display: flex;
         justify-content: center;
         margin: ($basic_indent) 0; 
-    }
+        &_order {
+            position: absolute;
+            transition: all .5s linear;
+            top: 0;
+            right: 0;
+            button {
+                border: none;
+                outline: none;
+                background: #f5f2d1;
+                transition: all .5s linear;
+                margin-right: $basic_indent / 4;
+                :hover {
+                    background: #f0e67b;
+                }
+            }
+        }
+    } 
 }
 // ↑
 // course show, blocks, course save

@@ -30,7 +30,7 @@ class CourseChange extends React.Component {
         visibility: '' 
     };
     // initial methods to get info about current course:
-    componentDidMount() {
+    componentDidMount() { 
         if(!this.props.usersId) return history.push('/');
         const { id } = this.props.match.params;
         this.updateInitialState(id);
