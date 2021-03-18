@@ -6,7 +6,6 @@ import Auth from './Auth';
 
 import history from '../../history';
 //styles
-import '../../styles/auth-screen.css';
 import logo from '../../static/logo-green.png';
 
 class SingUp extends React.Component {

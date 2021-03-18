@@ -1,9 +1,6 @@
 import React from 'react';
 import { Switch, Router, Route, Redirect } from 'react-router-dom';
 
-import Test from './Test';
-import TestAuth from './TestAuth';
-
 // subcomponents
 import Header from './extra/Header';
 import Help from './extra/Help';
@@ -43,15 +40,9 @@ class App extends React.Component{
                     <Switch>
                         <Route exact path="/help" component={Help} />
 
- 
-
-                        <Route exact path="/test" component={Test} />
-                        <Route exact path="/testauth" component={TestAuth} />
-
                         <Route exact path="/profile/settings" component={ProfileSettings} />
                         <Route exact path="/profile/courses" component={ProfileCourses} />
                         <Route exact path="/profile/:username" component={Profile} />
-
                          
                         <Route exact path="/courses" component={Courses} />
                         <Route exact path="/courses/:id" component={CourseShow} />
@@ -59,7 +50,6 @@ class App extends React.Component{
                         <Route exact path="/courses/edit/:id" component={CourseEdit} />
                         <Route exact path="/courses/change/:id" component={CourseChange} />
                         <Route exact path="/courses/delete/:id" component={CourseDelete} />
-                        
 
                         <Route exact path="/auth/signin" component={SignIn} />
                         <Route exact path="/auth/signup" component={SignUp} />
