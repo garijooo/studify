@@ -7,7 +7,7 @@ class CourseEdit extends React.Component {
             <main>
                 <Course 
                     id={this.props.match.params.id} 
-                    editable={'editable'}
+                    editable='editable'
                 />
             </main>
         );

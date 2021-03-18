@@ -138,6 +138,7 @@ class Course extends React.Component {
 
     // render methods
     renderUpDownIcons(index){
+        console.log(this.props.editable)
         if(index === 0) 
             return (
                 <>
@@ -176,6 +177,7 @@ class Course extends React.Component {
     }
 
     renderBlocks() {
+        console.log(this.props.editable)
         if(this.state.blocks !== []){
             return this.state.blocks.map((block, index) => {
                 switch(block.type){

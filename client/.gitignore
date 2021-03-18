@@ -9,7 +9,9 @@
 /coverage
 
 # production
-
+animation.mp4
+anim1.gif
+anim2.gif
 
 # misc
 .DS_Store
