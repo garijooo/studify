@@ -66,7 +66,7 @@ class App extends React.Component{
                         <Route exact path="/auth/forgotpass" component={ForgotPass} />
                         <Route exact path="/auth/resetpass/:resetToken" component={ResetPass} />
 
-                        <Redirect from='/' to="/courses" />   
+                        <Redirect from='/' to="/courses" />  
                     </Switch>
                 </>
             </Router>

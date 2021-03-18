@@ -6,10 +6,14 @@ $bg_main_color: #f5eea3;
 $bg_block_color: #386825;
 $bg_block_color_light: #66ac4a;
 $error_color: #d32a00;
+$error_color_light: #f36a47;
 $success_color: #4ab81f;
+$success_color_darken: #305c20;
 $header_font_size: 20px;
-
+$block_text_color: #000;
+$border_dark_color: #18380c;
 // templates
+// ↓
 %header-items {
     font-size: $header_font_size;
     cursor: pointer;
@@ -19,21 +23,28 @@ $header_font_size: 20px;
 }
 %header-items-hover {
     color:#66ac4a;
+    border-color: #66ac4a;
 }
 %item-content {
     width: 100%;
     padding: 0 $basic_indent;
 }
-// basic styles:
+// ↑
+// templates
+
+// basic styles
+// ↓
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     font-family: "Montserrat", sans-serif;
 }
+// ↑
+// basic styles
 
-// header styles:
-
+// header
+// ↓
 .header {
     background: $bg_block_color;
     &__nav {
@@ -54,16 +65,23 @@ $header_font_size: 20px;
             max-width: 100px;
             width: 50vw;
         }
+        &_auth {
+                border: $basic_indent / 6 solid #fff;
+                padding: $basic_indent / 4;
+        }
     }
-    &__list_item a, &__link {
+    &__list_item a, &__link_auth{
         @extend %header-items;
     }
-    &__list_item:hover a, &__link:hover {
+    &__list_item:hover a, &__link_auth:hover {
         @extend %header-items-hover;
     }
 }
+// ↑
+// header
 
-// main styles:
+// main
+// ↓
 main {
     width: 100%;
     background:#fff;
@@ -85,6 +103,11 @@ main {
         border-left: ($basic_indent / 2) solid $bg_block_color;
     }
 }
+// ↑
+// main
+
+// courses-list & item
+// ↓
 .courses-list {
     background: $bg_main_color;
     display: flex;
@@ -96,7 +119,6 @@ main {
         margin: $basic_indent;
     }
 }
-
 .item {
     max-width: 400px;
     width: 100%;
@@ -135,8 +157,6 @@ main {
             }
         }
     }
-
-
     &:hover {
         .item__link-conrolls {
             opacity: .8;
@@ -148,7 +168,6 @@ main {
             }   
         }
     }
-
     .item__link {
         cursor: pointer;
         opacity: 1;
@@ -194,21 +213,25 @@ main {
         @extend %item-content;
     }
 }
+// ↑
+// courses-list & item
 
 // auth page
+// ↓
 .absolute {
     position: relative;
     a {
         position: absolute;
         top: 0;
         img {
-            max-width: 125px;
-            max-height: 125px;
+            max-width: 100px;
+            max-height: 100px;
+            width: 50vw;
+            height: 50vw;
             z-index: 1;
         }
     }
 }
-
 .auth {
     background: $bg_main_color;
     width: 100vw;
@@ -217,9 +240,11 @@ main {
     justify-content: center;
     align-items: center;
 }
+// ↑
+// auth page
 
 // auth form
-
+// ↓
 .auth__form {
     background: #fff;
     &.form {
@@ -228,11 +253,14 @@ main {
         }
     }
 }
+// ↑
+// auth form 
 
-// create course form
+// create-course form
+// ↓
 .create-course {
     background: $bg_main_color;
-    width: 90%;
+    width: $container_width;
     max-width: 1000px;
 
 
@@ -240,17 +268,22 @@ main {
 .create-course__form {
     background: #fff;
 }
+// ↑
+// create-course form
 
-// form styles
-
+// global form
+// ↓
 .form {
     max-width: 400px;
-    width: 90%;
+    width: $container_width;
     margin: $basic_indent;
     padding: $basic_indent / 2;
     border-right: $basic_indent solid $bg_block_color;    
     &__input-textarea {
         resize: none;
+    }
+    &__input-file {
+        display: none;
     }
     h2 {
         font-size: $header_font_size;
@@ -282,7 +315,7 @@ main {
         }
     }
     &__subtext {
-        font-size: $header_font_size / 2;
+        font-size: ($header_font_size * 3 / 5);
         margin: 0;
         &:first-child {
             margin-top: $header_font_size / 2;
@@ -310,12 +343,18 @@ main {
             margin-right: $basic_indent;
         }
     }
+    &__list {
+        margin-bottom: $basic_indent;
+    }
 }
+// ↑
+// form prototype .form 
 
-// buttons 
+// buttons .btn
+// ↓
 .btn {
-    cursor: pointer;
     &__submit{
+        cursor: pointer;
         font-size: ($header_font_size * 5 / 6);
         color: #fff;
         background: $bg_block_color;
@@ -334,4 +373,154 @@ main {
     .wide {
         width: 100%;
     }
+    .wide-medium {
+        font-size: $header_font_size * 2 / 3;
+        width: 30%;
+    }
+    .accept {
+        background: $border_dark_color;
+        color: #fff;
+        &:hover {
+            background: $success_color_darken;
+        }
+    }
+    .decline {
+        background: $error_color;
+        color: #fff;
+        &:hover {
+            background: $error_color_light;
+        }
+    }
+    .accept, .decline {
+        cursor: pointer;
+        margin: 0 $basic_indent;
+        padding: ($basic_indent / 2) $basic_indent;
+    }
 }
+// ↑
+// button
+
+// course show, blocks, course save
+// ↓
+.course-save__btn {
+    display: flex;
+    justify-content: center;
+}
+
+.course-show {
+    max-width: 1000px;
+    width: $container_width;
+    background: $bg_main_color;
+    &__blocks {
+        padding: $basic_indent;
+    }
+    &__edit {
+        background: $bg_main_color;
+        &_form {
+            background: #fff;
+
+        }
+    }
+    &__preview {
+
+        &-block {
+            display: flex;
+            align-items: center;
+            flex-flow: column;
+            img, video {
+                margin-bottom: $basic_indent;
+            }
+            h4 {
+                font-size: $header_font_size * 1.5;
+                &.title {
+                    color: $bg_block_color;
+                }
+            }
+        }
+    }
+}
+
+.blocks { 
+    color: $block_text_color;
+    &__text{
+        background: #f5f2d1;
+        margin: ($basic_indent) 0; 
+        p {
+            font-size: ($header_font_size * 4 / 5);
+        }
+        h3 {
+            border-left: ($basic_indent * 2 / 5) solid $block_text_color;   
+            font-size: ($header_font_size * 6 / 5);
+        }
+        p, h3 {
+            padding: $basic_indent / 2;
+            padding-left: ($basic_indent * 2 / 5);
+
+        }
+    }
+    &__image, &__video, &__animation {
+        display: flex;
+        justify-content: center;
+        margin: ($basic_indent) 0; 
+    }
+}
+// ↑
+// course show, blocks, course save
+
+// media content size
+// ↓
+    .big {
+        img, video {
+            width: 100%;
+            height: 70vh;
+            max-height: 600px;
+        }
+    }
+    .medium {
+        img, video {
+            width: 75%;
+            height: 70vh;
+            max-height: 500px;
+        }
+    }
+    .small {
+        img, video {
+            width: 50%;
+            height: 70vh;
+            max-height: 400px;
+        }
+    }
+
+    .none {
+        display: none;
+    }
+
+
+    // adaptive part
+
+    // mobile devices
+    @media only screen and (max-width: 500px) {
+        .big {
+            img, video {
+                width: 100%;
+                height: 70vh;
+                max-height: 200px;
+            }
+        }
+        .medium {
+            img, video {
+                width: 75%;
+                height: 50vh;
+                max-height: 150px;
+            }
+        }
+        .small {
+            img, video {
+                width: 50%;
+                height: 50vh;
+                max-height: 100px;
+            }
+        }
+    }
+// ↑
+// media content size

@@ -1,11 +1,15 @@
 import React from 'react';
+import Course from './Course';
 
 class CourseShow extends React.Component {
     render() {
         return (
-            <div>
-                Course Show
-            </div>
+            <main>
+                <Course 
+                    id={this.props.match.params.id} 
+                    editable={null}
+                />
+            </main>
         )
     }
 }

@@ -58,8 +58,8 @@ class Header extends React.Component {
     }
     renderLink() {
         if(localStorage.getItem("authtoken"))
-            return <a onClick={this.signOutHandler} className="header__link"> Sign Out</a>;
-        return <Link to="/auth/signin" className="header__link">Sign In</Link>;  
+            return <a onClick={this.signOutHandler} className="header__link_auth"> Sign Out</a>;
+        return <Link to="/auth/signin" className="header__link_auth">Sign In</Link>;  
     }
 
     render() {

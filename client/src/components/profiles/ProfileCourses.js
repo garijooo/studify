@@ -40,7 +40,7 @@ class ProfileCourses extends React.Component {
                     <label htmlFor="heading">Heading</label>
                     <input id="heading" type="text" placeholder="Heading"    
                         onChange={e => this.setState({ heading: e.target.value })}
-                        className="form__input-text" autocomplete="off"
+                        className="form__input-text" autoComplete="off"
                     />
                     <label htmlFor="description">Description</label>
                     <textarea id="description" placeholder="Write a descrption of the Course"

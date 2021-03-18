@@ -2,105 +2,101 @@ import React from 'react';
 //styles
 import '../styles/style.scss';
 
-import logo from '../static/logo.png';
- 
+import preview from '../static/preview.jpg';
+import video from '../static/animation.mp4';
+import anim1 from '../static/anim1.gif'; 
+import anim2 from '../static/anim2.gif'; 
+
+
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+
+import Header from '../components/extra/Header';
 
 class Test extends React.Component{
     render() {
         return (
             <>
-            <header className="header">
-                <nav className="header__nav">
-                    <a className="header__link">
-                        <img className="header__link_logo" alt="logo" src={logo} />
-                    </a>
-                    <ul className="header__list">
-                        <li className="header__list_item"><a>Main</a></li>
-                        <li className="header__list_item"><a>My courses</a></li>
-                        <li className="header__list_item"><a>My results</a></li>
-                        <li className="header__list_item"><a>Profile</a></li>
-                    </ul>
-                    <a className="header__link">
-                        Sign Out
-                    </a>
-                </nav>
-            </header>
-            <main>
-                <div className="main-heading">
-                    <h1>Available courses</h1>
-                </div>
-                <article className="courses-list">
-                    <section className="courses-list__item item">
-                        <div className="item__link-conrolls">
-                            <a className="item__link-conrolls__edit">
-                                <EditIcon className="edit-icon" fontSize="medium">                        
-                                </EditIcon>
-                            </a>
-                            <a className="item__link-conrolls__delete">
-                                <DeleteIcon className="delete-icon" fontSize="medium">                        
-                                </DeleteIcon>
-                            </a>
-                        </div>
-                        <a className="item__link editable">
-                            <div className="item__image">
-                                <img src={logo} alt="Course preview" />
+                <Header />
+                <main>
+                    <div className="main-heading">
+                        <h1>{`"${123}"`}</h1>
+                    </div>
+                    <article className="course-show">
+                        <section className="course-show__blocks blocks">
+                            <div className="blocks__text">
+                                <h3>
+                                    Introduction to the MERN apps   
+                                </h3>
                             </div>
-                            <div className="item__title">
-                                <h2>
-                                    Introduction to the creation of MERN applications
-                                </h2>
+                            <div className="blocks__text">
+                                <p>
+                                    Some testing text
+                                    Proident culpa nisi aute culpa et consectetur. Amet eu deserunt enim elit elit esse voluptate et ullamco ullamco esse minim aliqua voluptate. Amet ipsum est fugiat occaecat quis enim veniam consectetur cupidatat irure tempor et. Ullamco cillum eu nulla veniam Lorem ad commodo elit mollit reprehenderit. Lorem pariatur occaecat culpa magna in voluptate aliquip in aute velit magna.
+                                    Proident culpa nisi aute culpa et consectetur. Amet eu deserunt enim elit elit esse voluptate et ullamco ullamco esse minim aliqua voluptate. Amet ipsum est fugiat occaecat quis enim veniam consectetur cupidatat irure tempor et. Ullamco cillum eu nulla veniam Lorem ad commodo elit mollit reprehenderit. Lorem pariatur occaecat culpa magna in voluptate aliquip in aute velit magna.
+                                    Proident culpa nisi aute culpa et consectetur. Amet eu deserunt enim elit elit esse voluptate et ullamco ullamco esse minim aliqua voluptate. Amet ipsum est fugiat occaecat quis enim veniam consectetur cupidatat irure tempor et. Ullamco cillum eu nulla veniam Lorem ad commodo elit mollit reprehenderit. Lorem pariatur occaecat culpa magna in voluptate aliquip in aute velit magna.
+                                </p>
                             </div>
-                            <p className="item__description">
-                                Main concepts of MERN applications
-                            </p>
-                            <p className="item__author">
-                                Author: <span>Matveyas Yegor</span>
-                            </p>  
-                        </a>
-                    </section>
-                    <section className="courses-list__item item">
-                        <a className="item__link">
-                            <div className="item__image">
-                             <img src={logo} alt="Course preview" />
+                            <div className="blocks__text">
+                                <p>
+                                    Some testing text
+                                    Proident culpa nisi aute culpa et consectetur. Amet eu deserunt enim elit elit esse voluptate et ullamco ullamco esse minim aliqua voluptate. Amet ipsum est fugiat occaecat quis enim veniam consectetur cupidatat irure tempor et. Ullamco cillum eu nulla veniam Lorem ad commodo elit mollit reprehenderit. Lorem pariatur occaecat culpa magna in voluptate aliquip in aute velit magna.
+                                    Proident culpa nisi aute culpa et consectetur. Amet eu deserunt enim elit elit es
+                                </p>
                             </div>
-                            <div className="item__title">
-                                <h2>
-                                    TypeScript Crash Course
-                                </h2>
+                            <div className="blocks__animation small">
+                                <img width="600" height="300"  src={anim1} />
                             </div>
-                            <p className="item__description">
-                                This course will introduce you to world of Typescript
-                            </p>
-                            <p className="item__author">
-                                Author: <span>Salimullina Polina</span>
-                            </p>  
-                        </a>
-                    </section>
-                    <section className="courses-list__item item">
-                        <a className="item__link">
-                            <div className="item__image">
-                                <img src={logo} alt="Course preview" />
+                            <div className="blocks__text">
+                                <p>
+                                    Adipisicing consectetur mollit adipisicing nisi aliqua irure.
+                                    Elit irure voluptate reprehenderit voluptate aliquip cillum commodo sunt aute esse eiusmod. Velit aute ea mollit incididunt qui aliquip minim commodo amet nostrud proident id veniam. Cupidatat non dolor excepteur deserunt laborum nisi excepteur sint do ex non amet laborum commodo. Occaecat cupidatat quis nostrud officia sit non nulla. Tempor culpa consectetur deserunt ea eiusmod dolor voluptate do ad.    
+                                </p>
                             </div>
-                            <div className="item__title">
-                                <h2>
-                                    Основы HTML и CSS
-                                </h2>
+                            <div className="blocks__animation medium">
+                                <img width="600" height="300"  src={anim2} />
                             </div>
-                            <p className="item__description">
-                                В данном курсе вы познакомитесь с основами HTML и CSS
-                            </p>
-                            <p className="item__author">
-                                Author: <span>Габдулхакова Диляра</span>
-                            </p>  
-                        </a>
-                    </section>
-                </article>
-            </main>
-            <footer>
+                            <div className="blocks__text">
+                                <p>
+                                    Cillum labore sit quis minim culpa consectetur voluptate magna exercitation dolor deserunt proident ea. Ullamco fugiat sint consequat sint deserunt pariatur ad officia ut minim. Et voluptate occaecat nulla minim minim.
+                                    Nulla exercitation ex pariatur cillum cupidatat laboris enim fugiat deserunt labore nisi ipsum velit dolore. Commodo ut qui ipsum consequat sint adipisicing eiusmod incididunt cupidatat ullamco consectetur nulla Lorem. Est esse commodo reprehenderit consequat deserunt culpa cupidatat nisi enim proident pariatur magna.
+                                </p>
+                            </div>
+                            <div className="blocks__text">
+                                <p>
+                                    Adipisicing consectetur mollit adipisicing nisi aliqua irure.
+                                    Elit irure voluptate reprehenderit voluptate aliquip cillum commodo uptate do ad.    
+                                </p>
+                            </div>
+                            <div className="blocks__image small">
+                                <img src={preview} />
+                            </div>
+                            <div className="blocks__text">
+                                <h3>
+                                    Vladimir Putin eating
+                                </h3>
+                            </div>
+                            <div className="blocks__text">
+                                <p>
+                                    Some testing text
+                                    Proident culpa nisi aute culpa et consectetur. Amet eu deserunt enim elit elit esse voluptate et ullamco ullamco esse minim aliqua voluptate. Amet ipsum est fugiat occaecat quis enim veniam consectetur cupidatat irure tempor et. Ullamco cillum eu nulla veniam Lorem ad commodo elit mollit reprehenderit. Lorem pariatur occaecat culpa magna in voluptate aliquip in aute velit magna.
+                                    </p>
+                            </div>
+                            <div className="blocks__video big">
+                                <video controls>
+                                    <source src={video} type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        </section>
 
-            </footer>
+                        <section className="course-show__form form">
+                            <form className="form">
+
+                            </form>                    
+                        </section>
+                    </article>
+                </main>
             </>
         )
     }

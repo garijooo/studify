@@ -17,7 +17,7 @@ class CourseList extends React.Component {
     renderItemLinkConrolls = id => {
         return(
             <div className="item__link-conrolls">
-                <Link className="item__link-conrolls__edit" to={`/courses/change/${id}`}>
+                <Link className="item__link-conrolls__edit" to={`/courses/edit/${id}`}>
                     <EditIcon className="edit-icon" fontSize="large">                        
                     </EditIcon>
                 </Link>
