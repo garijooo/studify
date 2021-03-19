@@ -83,7 +83,15 @@ class Course extends React.Component {
                 console.log(error);
             });
         }
-        
+        else {
+            const update = (this.state.blocks.filter((block, id) => id !== index));
+            this.setState({ blocks: update });
+            const updatedCourse = {
+                blocks: update
+            }
+            this.props.updateCourse(this.props.id, updatedCourse);
+            history.push(`/courses/edit/${this.props.id}`);
+        }
     }
 
     addTextBlockHandler = e => {
@@ -100,7 +108,6 @@ class Course extends React.Component {
     }
     fileChangeHandler = async e => {
         e.preventDefault();
-        console.log(222);
         const file = e.target.files[0];
         const fileName = `${Date.now()}-${file.name}`;
         const reader = new FileReader();
@@ -138,7 +145,6 @@ class Course extends React.Component {
 
     // render methods
     renderUpDownIcons(index){
-        console.log(this.props.editable)
         if(index === 0) 
             return (
                 <>
@@ -177,7 +183,6 @@ class Course extends React.Component {
     }
 
     renderBlocks() {
-        console.log(this.props.editable)
         if(this.state.blocks !== []){
             return this.state.blocks.map((block, index) => {
                 switch(block.type){

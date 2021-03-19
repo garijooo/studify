@@ -118,7 +118,7 @@ class SingUp extends React.Component {
                 <img src={logo} alt="logo" />
             </Link>
             <Auth 
-                title="SIGN OUT" 
+                title="SIGN UP" 
                 renderForm={this.renderForm()} 
                 renderSubElements={this.renderSubElements()} 
                 onSubmit={this.signInHandler}
