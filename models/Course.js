@@ -10,10 +10,15 @@ const CourseSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please provide Course's decription"]
     },
-    teachersId: {
+    creatorsId: {
         type: String,
-        required: [true, "No teachers ID was sent"]
+        required: [true, "No creators ID was sent"]
     },
+    creatorsFullName: {
+        type: String,
+        required: [true, "No creators Name was sent"]
+    },
+    tests: [String],
     blocks: [BlockSchema]
 });
 

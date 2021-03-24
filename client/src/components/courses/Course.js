@@ -31,7 +31,7 @@ class Course extends React.Component {
         try{
             await this.props.fetchCourse(id);
             if(this.props.editable) {
-                if(this.props.usersId !== this.props.course.teachersId) return history.push('/courses');  
+                if(this.props.usersId !== this.props.course.creatorsId) return history.push('/courses');  
             }
             this.setState({ blocks: [ ...this.props.course.blocks]});
         }   catch(error) {
@@ -401,7 +401,7 @@ class Course extends React.Component {
 const mapStateToProps = state => {
     return {
         course: state.courses.currentCourse,
-        usersId: state.auth._id
+        usersId: state.auth.id
     };
 }
 

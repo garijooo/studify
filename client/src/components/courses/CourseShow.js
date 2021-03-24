@@ -1,7 +1,10 @@
 import React from 'react';
 import Course from './Course';
-
+import history from '../../history';
 class CourseShow extends React.Component {
+    componentDidMount(){
+        !this.props.match.params.id && history.push('/profile/courses');
+    }
     render() {
         return (
             <main>

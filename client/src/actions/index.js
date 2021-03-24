@@ -5,7 +5,8 @@ import {
     INIT_COURSE,
     FETCH_COURSE,
     FETCH_COURSES,
-    MY_COURSES,
+    FETCH_COURSES_BY_CREATOR,
+    FETCH_COURSES_BY_LEARNER,
     UPDATE_LAST_CHANGE,
     UPDATE_TEACHERS_LAST_CHANGE,
     FETCH_STATUS,
@@ -18,19 +19,23 @@ const config = {
     }
 };
 
-export const signIn = (_id, email, username, role, lastChange) => {
+
+
+export const signIn = (user, token) => {
     return {
         type: SIGN_IN,
-        payload: {
-            _id,
-            username,
-            email, 
-            role,
-            lastChange
-        }
-    };
+            payload: {
+                token,
+                id: user._id,
+                username: user.username,
+                name: user.name,
+                surname: user.surname,
+                email: user.email, 
+                role: user.role,
+                lastChange: Date.now()
+            }
+    }
 }
-
 export const signOut = () => {
     return {
         type: SIGN_OUT
@@ -98,14 +103,29 @@ export const fetchCourses = () => async dispatch => {
     } 
 }
 
-export const fetchTeachersCourses = id => async dispatch => {
+export const fetchCoursesByCreator = id => async dispatch => {
     try { 
         const response = await axios.get(
-            `/api/courses/fetch/courses/${id}`,
+            `/api/courses/fetch/courses/creator/${id}`,
             config
         );
         dispatch({
-            type: MY_COURSES,
+            type: FETCH_COURSES_BY_CREATOR,
+            payload: response.data.courses   
+        });
+    } catch(err) {
+        console.log(err);
+    } 
+}
+
+export const fetchCoursesByLearner = id => async dispatch => {
+    try { 
+        const response = await axios.get(
+            `/api/courses/fetch/courses/learner/${id}`,
+            config
+        );
+        dispatch({
+            type: FETCH_COURSES_BY_LEARNER,
             payload: response.data.courses   
         });
     } catch(err) {

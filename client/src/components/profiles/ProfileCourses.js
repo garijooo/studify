@@ -1,23 +1,30 @@
 import React from 'react';
 import history from '../../history';
 import { connect } from 'react-redux';
-import { fetchTeachersCourses, updateFetchStatus, initCourse } from '../../actions';
+import { fetchCoursesByLearner, fetchCoursesByCreator, updateFetchStatus, initCourse } from '../../actions';
 import CourseList from '../courses/CourseList';
 
 class ProfileCourses extends React.Component {
     state = { heading: '', description: '', error: null };
 
     componentDidMount() {
-        if(!localStorage.getItem("authtoken")) return history.push('/auth/signin');
+        !this.props.token && history.push('/auth/signin');
         this.fetchCourses();
     }
 
     fetchCourses = () => {
         if(this.props.role === 'teacher'){
             if(this.props.fetchStatus) {
-                this.props.fetchTeachersCourses(this.props.id);
+                this.props.fetchCoursesByCreator(this.props.id);
                 this.props.updateFetchStatus(false);
             }
+        }
+        else {
+            this.props.fetchCoursesByLearner(this.props.id);
+            // if(this.props.fetchStatus) {
+            //     this.props.fetchCoursesByLearner(this.props.id);
+            //     this.props.updateFetchStatus(false);
+            // }
         }
     }
 
@@ -79,12 +86,12 @@ class ProfileCourses extends React.Component {
 }
 const mapStateToProps = state => {
     return { 
+        token: state.auth.token,
         role: state.auth.role,
-        id: state.auth._id,
+        id: state.auth.id,
         teachersLastChange: state.auth.teachersLastChange,
         fetchStatus: state.auth.fetchStatus,
-        courses: state.auth.myCourses,
-        selectedCourse: state.courses.selectedCourse
+        courses: state.auth.fetchedCourses
     };
 }
-export default connect(mapStateToProps, { fetchTeachersCourses, updateFetchStatus, initCourse })(ProfileCourses);
+export default connect(mapStateToProps, { fetchCoursesByLearner, fetchCoursesByCreator, updateFetchStatus, initCourse })(ProfileCourses);

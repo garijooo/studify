@@ -10,7 +10,8 @@ import Modal from '../extra/Modal';
 
 class CourseDelete extends React.Component {
     componentDidMount() {
-        if(!this.props.match.params.id) return history.push('/profile/courses');
+        !this.props.token && history.push('/auth/signin');
+        !this.props.match.params.id && history.push('/profile/courses');
         this.props.fetchCourse(this.props.match.params.id);
     }
     onDeleteHandler = async () => {
@@ -24,7 +25,6 @@ class CourseDelete extends React.Component {
                 `/api/courses/delete/${this.props.match.params.id}`,
                 config
             );
-            // CHANGED FETCH STATUS FOR UPDATE A LIST OF TEACHER'S COURSES
             this.props.updateFetchStatus(true);
             this.props.initCourse({});
             alert('A course was deleted!');
@@ -75,6 +75,7 @@ class CourseDelete extends React.Component {
 }
 const mapStateToProps = state => {
     return {
+        token: state.auth.token,
         currentCourse: state.courses.currentCourse
     };
 }

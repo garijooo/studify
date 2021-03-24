@@ -18,9 +18,6 @@ import CourseDelete from './courses/CourseDelete';
 import CourseShow from './courses/CourseShow';
 import Courses from './courses/Courses';
 
-//!!!!!!!!
-import CourseChange from './courses/CourseChange';
-
 // profile components
 import Profile from './profiles/Profile';
 import ProfileSettings from './profiles/ProfileSettings';
@@ -48,7 +45,6 @@ class App extends React.Component{
                         <Route exact path="/courses/:id" component={CourseShow} />
                         <Route exact path="/courses/new/:heading" component={CourseCreate} />
                         <Route exact path="/courses/edit/:id" component={CourseEdit} />
-                        <Route exact path="/courses/change/:id" component={CourseChange} />
                         <Route exact path="/courses/delete/:id" component={CourseDelete} />
 
                         <Route exact path="/auth/signin" component={SignIn} />

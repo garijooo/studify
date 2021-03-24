@@ -1,7 +1,13 @@
 import React from 'react';
 import Course from './Course';
+import { connect } from 'react-redux';
+import history from '../../history';
 
 class CourseEdit extends React.Component {
+    componentDidMount() {
+        !this.props.token && history.push('/auth/signin');
+        !this.props.match.params.id && history.push('/profile/courses');
+    }
     render() {
         return (
             <main>
@@ -13,5 +19,10 @@ class CourseEdit extends React.Component {
         );
     }
 }
+const mapStateToProps = state => {
+    return {
+        token: state.auth.token
+    };
+}
 
-export default CourseEdit;
+export default connect(mapStateToProps)(CourseEdit);

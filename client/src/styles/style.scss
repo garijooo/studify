@@ -135,6 +135,16 @@ main {
         top: 0;
         opacity: 0;
         transition: all .3s linear;
+        &__add {
+            cursor: pointer;
+           .add-icon {
+                transition: all .3s ease-in-out;
+                color: rgb(9, 102, 1);
+                &:hover {
+                    color: #0a850a;
+                }
+           } 
+        }
         .item__link-conrolls__edit {
             cursor: pointer; 
             .edit-icon {
@@ -228,7 +238,7 @@ main {
             max-height: 100px;
             width: 50vw;
             height: 50vw;
-            z-index: 1;
+            z-index: -2;
         }
     }
 }
@@ -246,6 +256,7 @@ main {
 // auth form
 // ↓
 .auth__form {
+    z-index: 2;
     background: #fff;
     &.form {
         h2 {

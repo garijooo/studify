@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const bcrypct = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../config/keys');
-const { CourseSchema } = require('./Course');
+
+const { LearnerSchema } = require('./Learner');
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -20,6 +21,14 @@ const UserSchema = new mongoose.Schema({
             "Please provide a valid email"
         ]
     },
+    name: {
+        type: String,
+        required: [true, "Please write your name"]
+    },
+    surname: {
+        type: String,
+        required: [true, "Please write your surname"]
+    },
     password: {
         type: String,
         required: [true, "Please add a password"],
@@ -30,9 +39,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please select a role"],
     }, 
-    courses: {
-        type: [String]
-    },
+    learner: LearnerSchema,
     resetPasswordToken: String,
     resetPasswordExpire: Date
 });

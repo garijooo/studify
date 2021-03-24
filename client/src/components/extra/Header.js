@@ -8,34 +8,8 @@ import logo from '../../static/logo.png';
 
 class Header extends React.Component {
 
-    componentDidMount() {
-        localStorage.getItem("authtoken") && this.fetchPrivateData();
-    }
-
-    fetchPrivateData = async () => {
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-                authorization: `Bearer ${localStorage.getItem("authtoken")}`
-            }
-        }
-
-        try {
-            const { data } = await axios.get('/api/private', config);
-            localStorage.setItem("id", data.data._id);
-            this.props.signIn(data.data._id, data.data.email, data.data.username, data.data.role);
-        } catch(e) {
-            localStorage.removeItem("id");
-            localStorage.removeItem("authtoken");
-            this.props.signOut();
-        }
-    }
-
     signOutHandler = () => {
-        localStorage.removeItem("id");
-        localStorage.removeItem("authtoken");
         this.props.signOut();
-        //history.push('/auth/signin');
     }
 
     renderAuthLinksList() {
@@ -57,7 +31,7 @@ class Header extends React.Component {
         );
     }
     renderLink() {
-        if(localStorage.getItem("authtoken"))
+        if(this.props.token)
             return <a onClick={this.signOutHandler} className="header__link_auth"> Sign Out</a>;
         return <Link to="/auth/signin" className="header__link_auth">Sign In</Link>;  
     }
@@ -71,7 +45,7 @@ class Header extends React.Component {
                             <img className="header__link_logo" alt="logo" src={logo} />
                         </Link>
                         <ul className="header__list">
-                        {localStorage.getItem("authtoken") ? this.renderAuthLinksList() : this.renderNonAuthLinksList()}
+                        {this.props.token ? this.renderAuthLinksList() : this.renderNonAuthLinksList()}
                         </ul>
                         {this.renderLink()}
                     </nav>
@@ -83,7 +57,8 @@ class Header extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        _id: state.auth._id,
+        token: state.auth.token,
+        id: state.auth.id,
         email: state.auth.email,
         username: state.auth.username,
         error: state.auth.error

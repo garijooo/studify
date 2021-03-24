@@ -6,7 +6,8 @@ import axios from 'axios';
 
 class Courses extends React.Component {
     componentDidMount() {
-        this.check();
+        this.props.fetchCourses();
+
     }
     check = async () => {
         const config = {
@@ -15,11 +16,13 @@ class Courses extends React.Component {
             }
         };
         try {
-           const { data } = await axios.get("/api/courses/changed", config);
-           if(this.props.lastChange < data.collectionChangeDate || this.props.lastChange === null) {
-                this.props.fetchCourses();
-                this.props.updateLastChange(data.collectionChangeDate);
-            }
+            this.props.fetchCourses();
+            console.log(this.props.courses);
+            // const { data } = await axios.get("/api/courses/changed", config);
+            // if(this.props.lastChange < data.collectionChangeDate || this.props.lastChange === null) {
+            //         this.props.fetchCourses();
+            //         this.props.updateLastChange(data.collectionChangeDate);
+            //     }
         }
         catch (err){
             console.log(err);
@@ -36,12 +39,16 @@ class Courses extends React.Component {
                 <CourseList courses={this.props.courses} editable={null}/>
             </main>
             </>
-        )
+        );
     }
 }
 
 const mapStateToProps = state => {
     return {
+        token: state.auth.token,
+        id: state.auth.id,
+        role: state.auth.role,
+        fetchedCourses: state.auth.fetchedCourses,
         lastChange: state.courses.lastChange,
         courses: state.courses.courses
     }

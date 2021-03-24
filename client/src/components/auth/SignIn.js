@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { signIn, signOut, updateLastChange, fetchTeachersCourses } from '../../actions'; 
+import { signIn, signOut, updateLastChange, fetchCoursesByCreator, fetchCoursesByLearner } from '../../actions'; 
 
 import Auth from './Auth';
 
@@ -26,14 +26,16 @@ class SignIn extends React.Component {
                 { email: this.state.email, password: this.state.password },
                 config
             );
-            localStorage.setItem("authtoken", data.token);
-            this.props.signIn(data._id, data.email, data.username, data.role, Date.now());
-            if(data.role === 'teacher') this.props.fetchTeachersCourses(data._id);
+
+            const { token, user } = data;
+            this.props.signIn(user, token);
+            if(user.role === 'student') this.props.fetchCoursesByLearner(user._id);
+            else this.props.fetchCoursesByCreator(user._id);
             history.push('/courses');
         } catch(error){
             this.props.signOut();
-            localStorage.removeItem("authtoken");
-            this.setState({ error: error.response.data.error });
+            console.log(error);
+            //this.setState({ error: error.response.data.error });
         }
     }
 
@@ -43,12 +45,12 @@ class SignIn extends React.Component {
                 <label htmlFor="email">Email:</label>
                 <input type="email" required placeholder="Enter email" name="email"
                     id="email" onChange={e => this.setState({ email: e.target.value })}
-                    className="form__input-text" autocomplete="off"
+                    className="form__input-text" autoComplete="off"
                 />
                 <label htmlFor="password">Password:</label>
                 <input type="password" required placeholder="Enter password" name="password"
                     id="password" onChange={e => this.setState({ password: e.target.value })}
-                    className="form__input-text" autocomplete="off"
+                    className="form__input-text" autoComplete="off"
                 />
                 <div className="form__input-btn btn">
                     <input  type="submit" value="SIGN IN" className="btn__submit wide"
@@ -94,4 +96,4 @@ class SignIn extends React.Component {
     }
 }
 
-export default connect(null, { signIn, signOut, updateLastChange, fetchTeachersCourses } )(SignIn);
+export default connect(null, { signIn, signOut, updateLastChange, fetchCoursesByLearner, fetchCoursesByCreator } )(SignIn);

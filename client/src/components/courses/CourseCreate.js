@@ -3,67 +3,14 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { updateLastChange, updateFetchStatus, initCourse } from '../../actions';
-// history object
+
 import history from '../../history';
-// modal window
 import Modal from '../extra/Modal';
 
 class CourseCreate extends React.Component {
-    //state = { url: null, error: null, blocks: [], data: null };
-
-    /*
-    fetchImage = async = (_id) => {
-
-    }
-    */
-    /*
-    uploadImage = async () => {
-       // e.preventDefault();
-        const config = {
-            headers: {
-                "Content-Type": "multipart/form-data",
-                "Accept": "application/json",
-                "type": "formData"
-            }
-        };
-        const formData = new FormData();
-        const imagedata = document.querySelector('input[type="file"]').files[0];
-        formData.append("data", imagedata);
-        console.log(formData);
-
-        try {
-            const { data } = await axios.post(               
-                "/api/upload/images",
-                formData
-            );
-            console.log(data);
-            console.log(data.data);
-            this.setState({ data: data.data });
-        } catch(error) {
-            console.log(error.response.data.error);
-            this.setState({ error: error.response.data.error });
-        }
-    } 
-    */
-    /*
-    uploadImage = e => {
-        e.preventDefault();
-        console.log(e);
-    }
-    */
-    /*
-<div>
-                Course create
-                <form onSubmit={this.uploadImage} >
-                    <input type="file" name="sampleFile" id="file-id" />
-                    <button>Upload</button>
-                    <h1>Data: {this.state.data}</h1>
-                </form>
-            </div>
-
-    */
     componentDidMount() {
-        if(!this.props.match.params.heading) history.push('/profile/courses');
+        !this.props.token && history.push('/auth/signin');
+        !this.props.match.params.heading && history.push('/profile/courses');
     }
 
     onCreateHandler = async e => {
@@ -74,19 +21,18 @@ class CourseCreate extends React.Component {
             }
         };
         try {
+            const creatorsFullName = `${this.props.name} ${this.props.surname}`;
             const { data } = await axios.post(
                 "/api/courses/create",
                 { 
                     heading: this.props.course.heading,
                     description: this.props.course.description,
-                    teachersId: this.props.teachersId
+                    creatorsId: this.props.creatorsId,
+                    creatorsFullName
                 },
                 config
             );
-            //this.props.updateLastChange(data.collectionChangeDate);
-            // CHANGED FETCH STATUS FOR UPDATE A LIST OF TEACHER'S COURSES
             this.props.updateFetchStatus(true);
-            this.props.initCourse({});
             history.push(`/courses/edit/${data.course._id}`);
         } catch(error){
             console.log(error);
@@ -95,7 +41,7 @@ class CourseCreate extends React.Component {
 
     rednerActions() {
         return (
-            <React.Fragment>
+            <>
                 <button 
                     onClick={this.onCreateHandler} 
                     className="green-btn"
@@ -108,20 +54,20 @@ class CourseCreate extends React.Component {
                 >
                 Cancel
                 </Link>
-            </React.Fragment>
+            </>
         ); 
     }  
 
     renderContent() {
         return (
-            <React.Fragment>
+            <>
                 <p>
                     {`Are you sure you want to create a Course with heading: '${this.props.course.heading}'?`}
                 </p>
                 <p>
                     {`Course description is: '${this.props.course.description}`}
                 </p>       
-            </React.Fragment>
+            </>
         
         );
     }
@@ -139,8 +85,13 @@ class CourseCreate extends React.Component {
 
 const mapStateToProps = state => {
     return { 
-        teachersId: state.auth._id,
-        course: state.courses.initCourse
+        token: state.auth.token,
+        creatorsId: state.auth.id,
+        name: state.auth.name,
+        surname: state.auth.surname,
+        course: state.courses.currentCourse,
+        name: state.auth.name,
+        surname: state.auth.surname
     };
 }
 

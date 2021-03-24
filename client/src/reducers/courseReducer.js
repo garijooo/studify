@@ -7,12 +7,12 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE = {
-    initCourse: {},
     courses: [],
     currentCourse: {
         title: null,
         text: null,
-        teachersId: null,
+        creatorsId: null,
+        creatorsFullName: '',
         blocks: []
     },
     lastChange: null
@@ -21,7 +21,7 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
     switch(action.type) {
         case INIT_COURSE:
-            return { ...state, initCourse: { ...action.payload } };
+            return { ...state, currentCourse: { ...action.payload } };
         case FETCH_COURSES:
             return { ...state, courses: [ ...action.payload ] };
         case FETCH_COURSE:

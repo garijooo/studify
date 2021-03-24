@@ -1,17 +1,21 @@
 import { 
     SIGN_IN, 
     SIGN_OUT, 
-    MY_COURSES, 
+    FETCH_COURSES_BY_CREATOR, 
+    FETCH_COURSES_BY_LEARNER,
     UPDATE_TEACHERS_LAST_CHANGE,
     FETCH_STATUS
 } from '../actions/types';
 
 const INITIAL_STATE = {
-    _id: null,
-    email: null,
-    username: null,
-    role: null,
-    myCourses: [],
+    token: null,
+    id: null,
+    email: '',
+    username: '',
+    name: '',
+    surname: '',
+    role: '',
+    fetchedCourses: [],
     teachersLastChange: null,
     fetchStatus: true 
 };
@@ -20,25 +24,31 @@ export default (state = INITIAL_STATE, action) => {
     switch(action.type) {
         case SIGN_IN:
             return { ...state, 
-                _id: action.payload._id,
+                token: action.payload.token,
+                id: action.payload.id,
                 email: action.payload.email,
+                name: action.payload.name,
+                surname: action.payload.surname,
                 username: action.payload.username,
                 role: action.payload.role,
                 teachersLastChange: action.payload.date
             };
         case SIGN_OUT:
-            return { ...state, 
-                _id: null,  
+            return { ...state,
+                token: null, 
+                id: null,  
                 email: null,  
                 username: null, 
                 role: null, 
-                myCourses: [], 
+                fetchedCourses: [], 
                 teachersLastChange: null 
             };
-        case MY_COURSES:
-            return { ...state, myCourses: action.payload };
+        case FETCH_COURSES_BY_CREATOR:
+            return { ...state, fetchedCourses: action.payload };
+        case FETCH_COURSES_BY_LEARNER:
+            return { ...state, fetchedCourses: action.payload };
         case FETCH_STATUS:
-            return { ...state, fetchStatus: action.payload }
+            return { ...state, fetchStatus: action.payload };
         case UPDATE_TEACHERS_LAST_CHANGE:
             return { ...state, teachersLastChange: action.payload };
         default:

@@ -5,10 +5,14 @@ const sendEmail = require('../utils/sendEmail');
 const keys = require('../config/keys');
 
 exports.signUp = async (req, res, next) => {
-    const { username, email, password, role } = req.body;
+    const { username, email, name, surname, password, role } = req.body;
     try {
-        const user = await User.create({
-            username, email, password, role
+        let user;
+        if(role === 'student') user = await User.create({
+            username, email, name, surname, password, role, learner: { courses: [] }
+        });
+        else user = await User.create({
+            username, email, name, surname, password, role
         });
         sendToken(user, 201, res);
     } catch(e){
@@ -100,7 +104,7 @@ const sendToken = (user, statusCode, res) => {
     const token = user.getSignedToken();
     res.status(statusCode).json({
         success: true, 
-        token: token,
+        token,
         user
     });
 }
