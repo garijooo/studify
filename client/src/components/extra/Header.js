@@ -9,6 +9,7 @@ import logo from '../../static/logo.png';
 class Header extends React.Component {
 
     signOutHandler = () => {
+        localStorage.removeItem("auth-token");
         this.props.signOut();
     }
 
@@ -31,7 +32,7 @@ class Header extends React.Component {
         );
     }
     renderLink() {
-        if(this.props.token)
+        if(localStorage.getItem("auth-token"))
             return <a onClick={this.signOutHandler} className="header__link_auth"> Sign Out</a>;
         return <Link to="/auth/signin" className="header__link_auth">Sign In</Link>;  
     }
@@ -45,7 +46,7 @@ class Header extends React.Component {
                             <img className="header__link_logo" alt="logo" src={logo} />
                         </Link>
                         <ul className="header__list">
-                        {this.props.token ? this.renderAuthLinksList() : this.renderNonAuthLinksList()}
+                        {localStorage.getItem("auth-token") ? this.renderAuthLinksList() : this.renderNonAuthLinksList()}
                         </ul>
                         {this.renderLink()}
                     </nav>

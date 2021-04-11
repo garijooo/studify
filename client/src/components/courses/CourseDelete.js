@@ -10,7 +10,7 @@ import Modal from '../extra/Modal';
 
 class CourseDelete extends React.Component {
     componentDidMount() {
-        !this.props.token && history.push('/auth/signin');
+        !localStorage.getItem("auth-token") && history.push('/auth/signin');
         !this.props.match.params.id && history.push('/profile/courses');
         this.props.fetchCourse(this.props.match.params.id);
     }

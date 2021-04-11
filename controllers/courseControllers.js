@@ -8,7 +8,7 @@ exports.createCourse = async (req, res, next) => {
     const { heading, description, creatorsId, creatorsFullName } = req.body;
     try {
         const course = await Course.create({
-            heading, creatorsId, description, creatorsFullName
+            heading, creatorsId, description, creatorsFullName, tests: []
         });
         try {
             storage.setState({"collectionChangeDate": new Date()});

@@ -5,7 +5,7 @@ import history from '../../history';
 
 class CourseEdit extends React.Component {
     componentDidMount() {
-        !this.props.token && history.push('/auth/signin');
+        !localStorage.getItem("auth-token") && history.push('/auth/signin');
         !this.props.match.params.id && history.push('/profile/courses');
     }
     render() {
@@ -24,5 +24,5 @@ const mapStateToProps = state => {
         token: state.auth.token
     };
 }
-
+ 
 export default connect(mapStateToProps)(CourseEdit);

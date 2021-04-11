@@ -9,7 +9,7 @@ import Modal from '../extra/Modal';
 
 class CourseCreate extends React.Component {
     componentDidMount() {
-        !this.props.token && history.push('/auth/signin');
+        !localStorage.getItem("auth-token") && history.push('/auth/signin');
         !this.props.match.params.heading && history.push('/profile/courses');
     }
 

@@ -21,7 +21,7 @@ class SingUp extends React.Component {
         surname: ''
     };
     componentDidMount() {
-        this.props.token && history.push('/courses');
+        localStorage.getItem("auth-token") && history.push('/courses');
     }
 
     signUpHandler = async e => {
@@ -49,11 +49,13 @@ class SingUp extends React.Component {
             );
             const { token, user } = data;
             this.props.signIn(user, token);
+            localStorage.setItem("auth-token", token);
             if(user.role === 'student') this.props.fetchCoursesByLearner(user._id);
             else this.props.fetchCoursesByCreator(user._id);
             history.push('/courses');
         } catch(error){
             console.log(error);
+            localStorage.removeItem("auth-token");
             if(error.response.data.error === 'Duplicate Field Value Enter') return this.setState({ error: 'Username or email is already reserved'});
             this.setState({ error: error.response.data.error });
         }

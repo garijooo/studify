@@ -582,3 +582,30 @@ main {
     }
 // ↑
 // media content size
+
+
+// tests
+// ↓
+.question {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: $basic_indent / 2 * 3;
+    input[type=text], textarea, span {
+        max-width: 300px;
+        width: 70%;
+    }
+    input[type=radio], input[type=checkbox] {
+        margin: ($basic_indent / 4) 0;
+    }
+    textarea {
+        resize: none;
+    }
+    input[type=text], span {
+        margin-bottom: ($basic_indent / 4);
+        padding: ($basic_indent / 4) 0;
+        background: #f5f2d1;
+    }
+}
+
+// ↑
+// tests

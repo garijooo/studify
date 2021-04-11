@@ -18,7 +18,7 @@ const CourseSchema = new mongoose.Schema({
         type: String,
         required: [true, "No creators Name was sent"]
     },
-    tests: [String],
+    tests: [{ testId: { type: mongoose.Schema.Types.ObjectId,  ref: 'Test'}, testTitle: String }],
     blocks: [BlockSchema]
 });
 

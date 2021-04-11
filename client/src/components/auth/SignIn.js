@@ -13,6 +13,12 @@ import logo from '../../static/logo-green.png';
 class SignIn extends React.Component {
     state = { email: null, password: null, error: null };
 
+    componentDidMount() {
+      
+        console.log(localStorage.getItem("auth-token"));
+        localStorage.getItem("auth-token") && history.push('/courses');
+    }
+
     signInHandler = async e => {
         e.preventDefault();
         const config = {
@@ -29,13 +35,14 @@ class SignIn extends React.Component {
 
             const { token, user } = data;
             this.props.signIn(user, token);
+            localStorage.setItem("auth-token", token);
             if(user.role === 'student') this.props.fetchCoursesByLearner(user._id);
             else this.props.fetchCoursesByCreator(user._id);
             history.push('/courses');
         } catch(error){
             this.props.signOut();
-            console.log(error);
-            //this.setState({ error: error.response.data.error });
+            localStorage.removeItem("auth-token");
+            this.setState({ error: error.response.data.error });
         }
     }
 

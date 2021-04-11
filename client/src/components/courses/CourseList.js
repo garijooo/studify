@@ -16,7 +16,7 @@ class CourseList extends React.Component {
     state = { class: '', changeId: null };
 
     componentDidMount() {
-        if(this.props.token && this.props.role === 'student') this.props.fetchCoursesByLearner(this.props.id);
+        if(localStorage.getItem("auth-token") && this.props.role === 'student') this.props.fetchCoursesByLearner(this.props.id);
     }
     addCourse = async (courseId) => {
         console.log('added');

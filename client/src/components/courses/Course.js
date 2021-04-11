@@ -1,6 +1,8 @@
 import React from 'react';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { fetchCourse, updateCourse } from '../../actions';
+import { Link } from 'react-router-dom';
 
 import history from '../../history';
 import firebase from '../../firebase/firebaseClient';
@@ -9,6 +11,7 @@ import firebase from '../../firebase/firebaseClient';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import { Divider } from '@material-ui/core';
 
 class Course extends React.Component {
     state = {  
@@ -19,7 +22,8 @@ class Course extends React.Component {
         fileName: '',
         uploadFile: null, 
         visibility: '',
-        size: 'small'    
+        size: 'small',
+        title: ''    
     };
     componentDidMount() {
         if(this.props.editable) {
@@ -189,7 +193,7 @@ class Course extends React.Component {
                     case 'title':
                         return(
                             <>
-                                <div className="blocks__text" key={index}>
+                                <div className="blocks__text" key={index} id={`block-${index}`}>
                                     <h3 className={`${this.props.editable ? this.props.editable : ''}`}>{block.text}</h3>
                                     <div className={`blocks__text_order ${this.props.editable && this.props.editable}`}>
                                         {this.props.editable && this.renderUpDownIcons(index)}
@@ -200,7 +204,7 @@ class Course extends React.Component {
                     case 'text':
                         return(
                             <>
-                                <div className="blocks__text" key={index}>
+                                <div className="blocks__text" key={index} id={`block-${index}`}>
                                     <p className={`${this.props.editable ? this.props.editable : ''}`}>{block.text}</p>
                                     <div className={`blocks__text_order ${this.props.editable && this.props.editable}`}>
                                         {this.props.editable && this.renderUpDownIcons(index)}
@@ -210,7 +214,7 @@ class Course extends React.Component {
                         );
                     case 'image':
                         return(
-                            <div className={`blocks__image ${block.size}`} key={index}>
+                            <div className={`blocks__image ${block.size}`} key={index} id={`block-${index}`}>
                                 <img src={block.url} />
                                 <div className={`blocks__image_order ${this.props.editable && this.props.editable}`}>
                                     {this.props.editable && this.renderUpDownIcons(index)}
@@ -219,7 +223,7 @@ class Course extends React.Component {
                         );
                     case 'video':
                         return(
-                            <div className={`blocks__video ${block.size}`} key={index}>
+                            <div className={`blocks__video ${block.size}`} key={index} id={`block-${index}`}>
                                 <video controls>
                                     <source src={block.url} type="video/mp4" />
                                     Your browser does not support the video tag.
@@ -231,7 +235,7 @@ class Course extends React.Component {
                         );
                     case 'animation':
                         return(
-                            <div className={`blocks__animation ${block.size}`} key={index}>
+                            <div className={`blocks__animation ${block.size}`} key={index} id={`block-${index}`}>
                                 <img src={block.url} />
                                 <div className={`blocks__animation_order ${this.props.editable && this.props.editable}`}>
                                     {this.props.editable && this.renderUpDownIcons(index)}
@@ -378,6 +382,52 @@ class Course extends React.Component {
             </div>
         );
     }
+    renderTestsList() {
+        if(this.props.course.tests){
+            return this.props.course.tests.map((test, index) => {
+                return(
+                    <div key={index}>
+                        <Link to={`/tests/${test.testId}`}>
+                            {test.testTitle}
+                        </Link>
+                        </div>
+                );
+            });
+        }
+    }
+    createTest = async e => {
+        e.preventDefault();
+        const config = {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        };
+        try {
+            const { data } = await axios.post(
+                "/api/tests/create",
+                { 
+                    title: this.state.title,
+                    courseId: this.props.course._id
+                },
+                config
+            );
+            this.props.fetchCourse(data.id);    
+        } catch(err) {
+            console.log(err);
+        }
+    }
+    renderCreateTest() {
+        return (
+            <>
+                <form>
+                    <label for="title">Test title</label>
+                    <input id="title" type="text" placeholder="Enter test title"
+                        onChange={e => this.setState({ title: e.target.value })} />
+                    <button onClick={this.createTest}>Create new test</button>
+                </form>
+            </>
+        );
+    }
     render() {
         return (
             <>
@@ -393,6 +443,20 @@ class Course extends React.Component {
                     {this.props.editable && this.renderEditForm()}
                     {this.props.editable && this.renderSaveButton()}
                 </article>
+                <article className="course-tests">
+                    <div className="course-tests__new-test">
+                        {this.props.editable && this.renderCreateTest()}
+                    </div>
+                    <section className="course-tests__list">
+                        {(this.props.editable || this.props.role === 'student') ? this.renderTestsList() : ''}
+                    </section>
+                    <section className="course-tests__questions questions">
+
+                    </section>
+                    <section className="course-tests__new-question">
+
+                    </section>
+                </article>
             </>
         )
     }
@@ -400,6 +464,7 @@ class Course extends React.Component {
 }
 const mapStateToProps = state => {
     return {
+        role: state.auth.role,
         course: state.courses.currentCourse,
         usersId: state.auth.id
     };

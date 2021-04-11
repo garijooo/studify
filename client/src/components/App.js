@@ -5,6 +5,8 @@ import { Switch, Router, Route, Redirect } from 'react-router-dom';
 import Header from './extra/Header';
 import Help from './extra/Help';
 
+import Test from './tests/Test';
+
 // auth system components
 import SignIn from './auth/SignIn';
 import SignUp from './auth/SignUp.js';
@@ -34,6 +36,7 @@ class App extends React.Component{
                 <>
                     <Route path="/profile" component={Header} />
                     <Route path="/courses" component={Header} />
+                    <Route path="/tests" component={Header} />
                     <Switch>
                         <Route exact path="/help" component={Help} />
 
@@ -41,6 +44,8 @@ class App extends React.Component{
                         <Route exact path="/profile/courses" component={ProfileCourses} />
                         <Route exact path="/profile/:username" component={Profile} />
                          
+                        <Route exact path="/tests/:id" component={Test} />
+
                         <Route exact path="/courses" component={Courses} />
                         <Route exact path="/courses/:id" component={CourseShow} />
                         <Route exact path="/courses/new/:heading" component={CourseCreate} />

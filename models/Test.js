@@ -1,7 +1,17 @@
 const mongoose = require('mongoose');
-const { QuestionSchema } = require('./Question');
-
+const QuestionSchema = new mongoose.Schema({
+    type: String,
+    text: String,
+    answer: String,
+    variants: [String],
+    answers: [String],
+    dataRef: Number
+});
 const TestSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: [true, "Please pass title of test"]
+    },
     questions: [QuestionSchema]
 });
 

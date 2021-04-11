@@ -18,6 +18,7 @@ app.use(express.json());
 app.use('/static/public', express.static(__dirname + '/public'));
 app.use('/api/auth/', require('./routes/authRoutes'));
 app.use('/api/courses/', require('./routes/courseRoutes'));
+app.use('/api/tests/', require('./routes/testRoutes'));
 app.use('/api/learner/', require('./routes/learnerRoutes'));
 
 app.use('/api/private/', require('./routes/privateRoutes'));

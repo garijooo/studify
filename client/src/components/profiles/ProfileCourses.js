@@ -8,10 +8,10 @@ class ProfileCourses extends React.Component {
     state = { heading: '', description: '', error: null };
 
     componentDidMount() {
-        !this.props.token && history.push('/auth/signin');
+        !localStorage.getItem("auth-token") && history.push('/auth/signin');
         this.fetchCourses();
     }
-
+ 
     fetchCourses = () => {
         if(this.props.role === 'teacher'){
             if(this.props.fetchStatus) {

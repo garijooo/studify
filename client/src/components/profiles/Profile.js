@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 class Profile extends React.Component {
     componentDidMount() {
-        if(!this.props.token) history.push('/auth/signin'); 
+        !localStorage.getItem("auth-token") && history.push('/auth/signin'); 
     }
     
     render() {
