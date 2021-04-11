@@ -23,7 +23,7 @@ class Course extends React.Component {
         uploadFile: null, 
         visibility: '',
         size: 'small',
-        title: ''    
+        title: ''
     };
     componentDidMount() {
         if(this.props.editable) {
@@ -382,16 +382,53 @@ class Course extends React.Component {
             </div>
         );
     }
+    onChangeVisibility = async currentTest => {
+        const config = {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        };
+        try {
+            const { data } = await axios.patch(
+                `/api/tests/visibility/change/${currentTest}`,
+                {
+                    courseId: this.props.id
+                },
+                config
+            );
+            console.log(data.success);
+        } catch(err) {
+            console.log(err);
+        }
+    }
     renderTestsList() {
         if(this.props.course.tests){
             return this.props.course.tests.map((test, index) => {
-                return(
-                    <div key={index}>
-                        <Link to={`/tests/${test.testId}`}>
-                            {test.testTitle}
-                        </Link>
+                if(this.props.role === 'student' && test.enable){
+                    return(
+                        <div key={index}>
+                            <Link to={`/tests/${test.testId}`}>
+                                {test.testTitle}
+                            </Link>
                         </div>
-                );
+                    );
+                }
+                else if(this.props.editable) {
+                    return(
+                        <div key={index}>
+                            <Link to={`/tests/${test.testId}`}>
+                                {test.testTitle}
+                            </Link>
+                            {
+                            test.enable ? 
+                                <a onClick={() => this.onChangeVisibility(test.testId)} className="change-ref">Hide</a>
+                            :
+                                <a onClick={() => this.onChangeVisibility(test.testId)} className="change-ref">Show</a>    
+                            }
+                        </div>
+                    );
+                }
+                else return;
             });
         }
     }
@@ -449,12 +486,6 @@ class Course extends React.Component {
                     </div>
                     <section className="course-tests__list">
                         {(this.props.editable || this.props.role === 'student') ? this.renderTestsList() : ''}
-                    </section>
-                    <section className="course-tests__questions questions">
-
-                    </section>
-                    <section className="course-tests__new-question">
-
                     </section>
                 </article>
             </>

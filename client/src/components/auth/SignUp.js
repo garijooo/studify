@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { signIn } from '../../actions';
+import { signIn, fetchCoursesByCreator, fetchCoursesByLearner } from '../../actions';
 import Auth from './Auth';
 
 import history from '../../history';
@@ -54,10 +54,11 @@ class SingUp extends React.Component {
             else this.props.fetchCoursesByCreator(user._id);
             history.push('/courses');
         } catch(error){
-            console.log(error);
             localStorage.removeItem("auth-token");
-            if(error.response.data.error === 'Duplicate Field Value Enter') return this.setState({ error: 'Username or email is already reserved'});
-            this.setState({ error: error.response.data.error });
+            if(error.response.data !== undefined) {
+                if(error.response.data.error === 'Duplicate Field Value Enter') return this.setState({ error: 'Username or email is already reserved'});
+                this.setState({ error: error.response.data.error });
+            }
         }
 
     }
@@ -148,4 +149,4 @@ const mapStateToProps = state => {
     });
 }
 
-export default connect(mapStateToProps, { signIn })(SingUp);
+export default connect(mapStateToProps, { signIn, fetchCoursesByCreator, fetchCoursesByLearner })(SingUp);

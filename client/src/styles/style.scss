@@ -609,3 +609,19 @@ main {
 
 // ↑
 // tests
+
+
+
+// extra
+// ↓
+.change-ref {
+    color: #b6aa27;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    margin-left: $basic_indent / 2;
+    &:hover {
+        color: #e4d95d;
+    }
+}
+// ↑
+// extra

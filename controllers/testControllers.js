@@ -9,7 +9,7 @@ exports.createTest = async (req, res, next) => {
             title, questions: []
         });
         const course = await Course.findById(courseId);
-        course.tests = [ ...course.tests, { testId: test._id, testTitle: title } ];
+        course.tests = [ ...course.tests, { testId: test._id, testTitle: title, enable: true } ];
         course.save();
         res.status(200).json({
             success: true,
@@ -105,6 +105,29 @@ exports.getResult = async (req, res, next) => {
             gotResult
         })
     } catch (err) {
+        next(err);
+    }
+}
+
+exports.changeVisibility = async (req, res, next) => {
+    const { id } = req.params;
+    const { courseId } = req.body;
+    try {
+        const course = await Course.findById(courseId);
+        let tests = [...course.tests];
+
+        course.tests.map((test, index) => {
+            if(test.testId == id) {
+                tests[index].enable = !tests[index].enable;
+                console.log(tests[index].enable);
+            }
+        });
+        course.tests = [...tests];
+        course.save();
+        res.status(200).json({
+            success: true
+        });
+    } catch(err) {
         next(err);
     }
 }
